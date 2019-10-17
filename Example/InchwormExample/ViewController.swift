@@ -14,8 +14,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .black
-        let slider = SlideRuler(frame: CGRect(x: 0, y: view.frame.height - 200, width: view.frame.width - 20, height: 40))
-        slider.backgroundColor = .blue
+        let slider = DialContainer(frame: CGRect(x: 0, y: view.frame.height - 200, width: view.frame.width - 20, height: 100))
         view.addSubview(slider)
     }
 

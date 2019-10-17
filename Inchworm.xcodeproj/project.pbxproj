@@ -14,6 +14,7 @@
 		5F732C0023578E84008B53DA /* DialContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732BFF23578E84008B53DA /* DialContainer.swift */; };
 		5F732C0223578ED7008B53DA /* IndicatorContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C0123578ED7008B53DA /* IndicatorContainer.swift */; };
 		5F732C0423578F67008B53DA /* SlideRuler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C0323578F67008B53DA /* SlideRuler.swift */; };
+		5F732C2823581287008B53DA /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C2723581287008B53DA /* CircularProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		5F732BFF23578E84008B53DA /* DialContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialContainer.swift; sourceTree = "<group>"; };
 		5F732C0123578ED7008B53DA /* IndicatorContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorContainer.swift; sourceTree = "<group>"; };
 		5F732C0323578F67008B53DA /* SlideRuler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuler.swift; sourceTree = "<group>"; };
+		5F732C2723581287008B53DA /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				5F732BFF23578E84008B53DA /* DialContainer.swift */,
 				5F732C0123578ED7008B53DA /* IndicatorContainer.swift */,
 				5F732C0323578F67008B53DA /* SlideRuler.swift */,
+				5F732C2723581287008B53DA /* CircularProgressView.swift */,
 			);
 			path = Inchworm;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				5F732BFE23578E57008B53DA /* Inchworm.swift in Sources */,
 				5F732C0023578E84008B53DA /* DialContainer.swift in Sources */,
 				5F732C0423578F67008B53DA /* SlideRuler.swift in Sources */,
+				5F732C2823581287008B53DA /* CircularProgressView.swift in Sources */,
 				5F732C0223578ED7008B53DA /* IndicatorContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,7 +13,7 @@ let majorScaleBarNumber = 5
 let scaleWidth: CGFloat = 1
 
 protocol SlideRulerDelegate {
-    func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: Double)
+    func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat)
 }
 
 class SlideRuler: UIView {
@@ -34,8 +34,9 @@ class SlideRuler: UIView {
         return r
     } ()
     
-    var offsetDelegate: SlideRulerDelegate?
+    var delegate: SlideRulerDelegate?
     var reset = false
+    var offsetValue: CGFloat = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,8 +59,9 @@ class SlideRuler: UIView {
         slider.frame = bounds
         addSubview(slider)
         
+        offsetValue = frame.width / 2
         slider.contentSize = CGSize(width: frame.width * 2, height: frame.height)
-        slider.contentOffset = CGPoint(x: frame.width / 2, y: 0)
+        slider.contentOffset = CGPoint(x: offsetValue, y: 0)
         slider.showsHorizontalScrollIndicator = false
         slider.showsVerticalScrollIndicator = false
         slider.delegate = self
@@ -133,5 +135,12 @@ extension SlideRuler: UIScrollViewDelegate {
         } else {
             reset = false
         }
+        
+        var offsetRatio = (slider.contentOffset.x - offsetValue) / offsetValue
+        
+        if offsetRatio > 1 { offsetRatio = 1.0 }
+        if offsetRatio < -1 { offsetRatio = -1.0 }
+        
+        delegate?.didGetOffsetRatio(from: self, offsetRatio: offsetRatio)
     }
 }

@@ -10,12 +10,28 @@ import UIKit
 
 class DialContainer: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    var indicatorContainer: IndicatorContainer!
+    var slideRuler: SlideRuler!    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        indicatorContainer = IndicatorContainer(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height / 2))
+        slideRuler = SlideRuler(frame: CGRect(x: 0, y: frame.height / 2, width: frame.width, height: frame.height / 2))
+        slideRuler.delegate = self
+        
+        addSubview(indicatorContainer)
+        addSubview(slideRuler)
     }
-    */
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
+}
+
+extension DialContainer: SlideRulerDelegate {
+    func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat) {
+        indicatorContainer.activeIndicator.setProgress(Float(offsetRatio))
+    }
 }
