@@ -27,11 +27,18 @@ class DialContainer: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-
+    
+    func addIconWith(iconImage: CGImage, andLimitNumber limitNumber: Int) {
+        indicatorContainer.addIconWith(iconImage: iconImage, andLimitNumber: limitNumber)
+    }
+    
+    func setActiveIndicator() {
+        indicatorContainer.setActiveIndicator()
+    }
 }
 
 extension DialContainer: SlideRulerDelegate {
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat) {
-        indicatorContainer.activeIndicator.setProgress(Float(offsetRatio))
+        indicatorContainer.activeIndicator?.setProgress(Float(offsetRatio))
     }
 }

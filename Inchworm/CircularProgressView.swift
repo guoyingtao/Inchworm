@@ -16,16 +16,24 @@ class CircularProgressView: UIView {
     fileprivate var progressNumberLayer = CATextLayer()
     fileprivate var iconLayer = CALayer()
     
-    var limitNumber = 40
+    var limitNumber = 30
+    var iconImage: CGImage?
     
     private lazy var circlePath: UIBezierPath = {
         UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
     } ()
                 
-    override init(frame: CGRect) {
+    init(frame: CGRect, limitNumber: Int = 30, iconImage: CGImage? = nil) {
         super.init(frame: frame)
+        
+        self.limitNumber = limitNumber
+        self.iconImage = iconImage
+        
         createCircularPath()
         createProgressNumber()
+        createIcon()
+        
+        progressNumberLayer.isHidden = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,6 +57,19 @@ class CircularProgressView: UIView {
         didSet {
             trackLayer.strokeColor = trackColor.cgColor
         }
+    }
+    
+    fileprivate func createIcon() {
+        guard let iconImage = iconImage else {
+            return
+        }
+        
+        let iconLayerLength = frame.width / 2
+        
+        iconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
+        iconLayer.contents = iconImage
+        iconLayer.contentsGravity = .resizeAspect
+        layer.addSublayer(iconLayer)
     }
     
     fileprivate func createCircularPath() {
@@ -101,6 +122,9 @@ class CircularProgressView: UIView {
     }
 
     func setProgress(_ progress: Float) {
+        progressNumberLayer.isHidden = false
+        iconLayer.isHidden = true
+        
         if progress > 0 {
             progressLayer.isHidden = false
             minusProgressLayer.isHidden = true
