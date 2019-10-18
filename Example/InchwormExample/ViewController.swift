@@ -14,13 +14,30 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .black
-        let slider = DialContainer(frame: CGRect(x: 0, y: view.frame.height - 200, width: view.frame.width - 20, height: 100))
+        
+        let sliderWidth = view.frame.width - 20
+        let slider = DialContainer(frame: CGRect(x: 0, y: view.frame.height - 200, width: sliderWidth, height: 100))
+        slider.backgroundColor = .blue
         
         let iconImage = UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!
-                
         slider.addIconWith(iconImage: iconImage, andLimitNumber: 30)
+        
+        let iconImage1 = UIImage(named: "ic_camera_front")!.tinted(with: UIColor.white)!.cgImage!
+        slider.addIconWith(iconImage: iconImage1, andLimitNumber: 20)
+
+        let iconImage2 = UIImage(named: "settings")!.tinted(with: UIColor.white)!.cgImage!
+        slider.addIconWith(iconImage: iconImage2, andLimitNumber: 40)
+        
         view.addSubview(slider)
         slider.setActiveIndicator()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            slider.heightAnchor.constraint(equalToConstant: 100),
+            slider.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            slider.widthAnchor.constraint(equalToConstant: sliderWidth)
+        ])
     }
 
 }

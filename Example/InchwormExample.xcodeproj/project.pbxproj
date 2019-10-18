@@ -14,7 +14,7 @@
 		5F732C1B23579D8A008B53DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F732C1A23579D8A008B53DA /* Assets.xcassets */; };
 		5F732C1E23579D8A008B53DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F732C1C23579D8A008B53DA /* LaunchScreen.storyboard */; };
 		5F732C2623579DC5008B53DA /* SlideRuler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C2523579DC5008B53DA /* SlideRuler.swift */; };
-		5F732C2C2359026B008B53DA /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C292359026A008B53DA /* CircularProgressView.swift */; };
+		5F732C2C2359026B008B53DA /* ProcessIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C292359026A008B53DA /* ProcessIndicatorView.swift */; };
 		5F732C2D2359026B008B53DA /* DialContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C2A2359026A008B53DA /* DialContainer.swift */; };
 		5F732C2E2359026B008B53DA /* IndicatorContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C2B2359026A008B53DA /* IndicatorContainer.swift */; };
 /* End PBXBuildFile section */
@@ -29,7 +29,7 @@
 		5F732C1D23579D8A008B53DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5F732C1F23579D8A008B53DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F732C2523579DC5008B53DA /* SlideRuler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SlideRuler.swift; path = ../../Inchworm/SlideRuler.swift; sourceTree = "<group>"; };
-		5F732C292359026A008B53DA /* CircularProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircularProgressView.swift; path = ../../Inchworm/CircularProgressView.swift; sourceTree = "<group>"; };
+		5F732C292359026A008B53DA /* ProcessIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProcessIndicatorView.swift; path = ../../Inchworm/ProcessIndicatorView.swift; sourceTree = "<group>"; };
 		5F732C2A2359026A008B53DA /* DialContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DialContainer.swift; path = ../../Inchworm/DialContainer.swift; sourceTree = "<group>"; };
 		5F732C2B2359026A008B53DA /* IndicatorContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndicatorContainer.swift; path = ../../Inchworm/IndicatorContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,7 +64,7 @@
 		5F732C1023579D89008B53DA /* InchwormExample */ = {
 			isa = PBXGroup;
 			children = (
-				5F732C292359026A008B53DA /* CircularProgressView.swift */,
+				5F732C292359026A008B53DA /* ProcessIndicatorView.swift */,
 				5F732C2A2359026A008B53DA /* DialContainer.swift */,
 				5F732C2B2359026A008B53DA /* IndicatorContainer.swift */,
 				5F732C2523579DC5008B53DA /* SlideRuler.swift */,
@@ -155,7 +155,7 @@
 				5F732C2D2359026B008B53DA /* DialContainer.swift in Sources */,
 				5F732C1223579D89008B53DA /* AppDelegate.swift in Sources */,
 				5F732C2623579DC5008B53DA /* SlideRuler.swift in Sources */,
-				5F732C2C2359026B008B53DA /* CircularProgressView.swift in Sources */,
+				5F732C2C2359026B008B53DA /* ProcessIndicatorView.swift in Sources */,
 				5F732C1423579D89008B53DA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

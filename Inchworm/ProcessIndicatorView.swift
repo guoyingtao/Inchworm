@@ -1,5 +1,5 @@
 //
-//  CircularProgressView.swift
+//  ProcessIndicatorView.swift
 //  Inchworm
 //
 //  Created by Echo on 10/16/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CircularProgressView: UIView {
+class ProcessIndicatorView: UIView {
 
     fileprivate var progressLayer = CAShapeLayer()
     fileprivate var minusProgressLayer = CAShapeLayer()
@@ -18,6 +18,8 @@ class CircularProgressView: UIView {
     
     var limitNumber = 30
     var iconImage: CGImage?
+    
+    var status: IndicatorStatus = .initial
     
     private lazy var circlePath: UIBezierPath = {
         UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
@@ -111,16 +113,6 @@ class CircularProgressView: UIView {
         layer.addSublayer(progressNumberLayer)
     }
     
-    func setProgressWithAnimation(duration: TimeInterval, value: Float) {
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = duration
-        animation.fromValue = 0
-        animation.toValue = value
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        progressLayer.strokeEnd = CGFloat(value)
-        progressLayer.add(animation, forKey: "animateprogress")
-    }
-
     func setProgress(_ progress: Float) {
         progressNumberLayer.isHidden = false
         iconLayer.isHidden = true
@@ -149,4 +141,11 @@ class CircularProgressView: UIView {
         trackLayer.strokeColor = trackColor.cgColor
         progressNumberLayer.string = "\(Int(progress * 40))"
     }
+}
+
+enum IndicatorStatus {
+    case initial
+    case tempReset(progress: Int)
+    case editing
+    case changed(progress: Int)
 }
