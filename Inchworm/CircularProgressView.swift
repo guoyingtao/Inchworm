@@ -11,6 +11,7 @@ import UIKit
 class CircularProgressView: UIView {
 
     fileprivate var progressLayer = CAShapeLayer()
+    fileprivate var minusProgressLayer = CAShapeLayer()
     fileprivate var trackLayer = CAShapeLayer()
     fileprivate var progressNumberLayer = CATextLayer()
     fileprivate var iconLayer = CALayer()
@@ -38,6 +39,12 @@ class CircularProgressView: UIView {
         }
     }
     
+    var minusProgressColor = UIColor.white {
+        didSet {
+            minusProgressLayer.strokeColor = minusProgressColor.cgColor
+        }
+    }
+    
     var trackColor = UIColor.white {
         didSet {
             trackLayer.strokeColor = trackColor.cgColor
@@ -61,6 +68,13 @@ class CircularProgressView: UIView {
         progressLayer.lineWidth = 2.0
         progressLayer.strokeEnd = 0.0
         layer.addSublayer(progressLayer)
+        
+        minusProgressLayer.path = circlePath.reversing().cgPath
+        minusProgressLayer.fillColor = UIColor.clear.cgColor
+        minusProgressLayer.strokeColor = minusProgressColor.cgColor
+        minusProgressLayer.lineWidth = 2.0
+        minusProgressLayer.strokeEnd = 0.0
+        layer.addSublayer(minusProgressLayer)
     }
     
     func createProgressNumber() {
@@ -88,20 +102,27 @@ class CircularProgressView: UIView {
 
     func setProgress(_ progress: Float) {
         if progress > 0 {
+            progressLayer.isHidden = false
+            minusProgressLayer.isHidden = true
+            
             progressLayer.path = circlePath.cgPath
             progressColor = UIColor(displayP3Red: 247.0 / 255.0, green: 198.0 / 255.0, blue: 0, alpha: 1)
             trackColor = UIColor(displayP3Red: 55.0 / 255.0, green: 45.0 / 255.0, blue: 9.0 / 255.0, alpha: 1)
+            progressLayer.strokeColor = progressColor.cgColor
+            progressLayer.strokeEnd = abs(CGFloat(progress))
+            progressNumberLayer.foregroundColor = progressColor.cgColor
         } else {
-            progressLayer.path = circlePath.reversing().cgPath
-            progressColor = UIColor(displayP3Red: 203.0 / 255.0, green: 203.0 / 255.0, blue: 203.0 / 255.0, alpha: 1)
+            progressLayer.isHidden = true
+            minusProgressLayer.isHidden = false
+            
+            minusProgressColor = UIColor(displayP3Red: 203.0 / 255.0, green: 203.0 / 255.0, blue: 203.0 / 255.0, alpha: 1)
             trackColor = UIColor(displayP3Red: 84.0 / 255.0, green: 84.0 / 255.0, blue: 84.0 / 255.0, alpha: 1)
+            minusProgressLayer.strokeColor = minusProgressColor.cgColor
+            minusProgressLayer.strokeEnd = abs(CGFloat(progress))
+            progressNumberLayer.foregroundColor = minusProgressColor.cgColor
         }
         
         trackLayer.strokeColor = trackColor.cgColor
-        progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.strokeEnd = abs(CGFloat(progress))
-        
-        progressNumberLayer.foregroundColor = progressColor.cgColor
         progressNumberLayer.string = "\(Int(progress * 40))"
     }
 }
