@@ -9,7 +9,7 @@
 import UIKit
 
 class ProcessIndicatorView: UIView {
-
+    
     fileprivate var progressLayer = CAShapeLayer()
     fileprivate var minusProgressLayer = CAShapeLayer()
     fileprivate var trackLayer = CAShapeLayer()
@@ -17,25 +17,29 @@ class ProcessIndicatorView: UIView {
     fileprivate var iconLayer = CALayer()
     
     var limitNumber = 30
-    var iconImage: CGImage?
     
+    var normalIconImage: CGImage?
+    var dimmedIconImage: CGImage?
+    
+    var progress: Float = 0.0
     var status: IndicatorStatus = .initial
     
     private lazy var circlePath: UIBezierPath = {
         UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
     } ()
-                
-    init(frame: CGRect, limitNumber: Int = 30, iconImage: CGImage? = nil) {
+    
+    init(frame: CGRect, limitNumber: Int = 30, normalIconImage: CGImage? = nil, dimmedIconImage: CGImage? = nil) {
         super.init(frame: frame)
         
         self.limitNumber = limitNumber
-        self.iconImage = iconImage
+        self.normalIconImage = normalIconImage
+        self.dimmedIconImage = dimmedIconImage
         
         createCircularPath()
         createProgressNumber()
         createIcon()
         
-        progressNumberLayer.isHidden = true
+        change(to: .initial)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,14 +66,9 @@ class ProcessIndicatorView: UIView {
     }
     
     fileprivate func createIcon() {
-        guard let iconImage = iconImage else {
-            return
-        }
-        
         let iconLayerLength = frame.width / 2
         
         iconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
-        iconLayer.contents = iconImage
         iconLayer.contentsGravity = .resizeAspect
         layer.addSublayer(iconLayer)
     }
@@ -85,19 +84,22 @@ class ProcessIndicatorView: UIView {
         trackLayer.strokeEnd = 1.0
         layer.addSublayer(trackLayer)
         
-        progressLayer.path = circlePath.cgPath
-        progressLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.lineWidth = 2.0
-        progressLayer.strokeEnd = 0.0
+        progressLayer = getProgressLayer(by: circlePath.cgPath, and: progressColor.cgColor)
         layer.addSublayer(progressLayer)
         
-        minusProgressLayer.path = circlePath.reversing().cgPath
-        minusProgressLayer.fillColor = UIColor.clear.cgColor
-        minusProgressLayer.strokeColor = minusProgressColor.cgColor
-        minusProgressLayer.lineWidth = 2.0
-        minusProgressLayer.strokeEnd = 0.0
-        layer.addSublayer(minusProgressLayer)
+        minusProgressLayer = getProgressLayer(by: circlePath.reversing().cgPath, and: minusProgressColor.cgColor)
+        layer.addSublayer(minusProgressLayer)        
+    }
+    
+    private func getProgressLayer(by path: CGPath, and color: CGColor) -> CAShapeLayer {
+        let layer = CAShapeLayer()
+        layer.path = path
+        layer.fillColor = UIColor.clear.cgColor
+        layer.strokeColor = color
+        layer.lineWidth = 2.0
+        layer.strokeEnd = 0.0
+        
+        return layer
     }
     
     func createProgressNumber() {
@@ -109,13 +111,14 @@ class ProcessIndicatorView: UIView {
         
         progressNumberLayer.alignmentMode = .center
         progressNumberLayer.frame = CGRect(x: self.layer.bounds.origin.x, y: ((self.layer.bounds.height - progressNumberLayer.fontSize) / 2), width: self.layer.bounds.width, height: self.layer.bounds.height)
-
+        
         layer.addSublayer(progressNumberLayer)
     }
     
     func setProgress(_ progress: Float) {
         progressNumberLayer.isHidden = false
         iconLayer.isHidden = true
+        self.progress = progress
         
         if progress > 0 {
             progressLayer.isHidden = false
@@ -140,6 +143,33 @@ class ProcessIndicatorView: UIView {
         
         trackLayer.strokeColor = trackColor.cgColor
         progressNumberLayer.string = "\(Int(progress * 40))"
+    }
+    
+    func change(to status: IndicatorStatus) {
+        iconLayer.isHidden = false
+        progressNumberLayer.isHidden = true
+        
+        switch status {
+        case .initial:
+            // show icon
+            print("initial")
+            iconLayer.contents = normalIconImage
+        case .tempReset:
+            // show icon
+            // show gray status
+            print("tempReset")
+            iconLayer.contents = dimmedIconImage
+        case .editing:
+            // show number
+            // show progress
+            print("editing")
+            iconLayer.isHidden = true
+            progressNumberLayer.isHidden = false
+        case .changed:
+            // show icon
+            // show progress
+            print("changed")
+        }
     }
 }
 

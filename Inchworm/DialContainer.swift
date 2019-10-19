@@ -46,8 +46,8 @@ class DialContainer: UIView {
         super.init(coder: coder)
     }
     
-    func addIconWith(iconImage: CGImage, andLimitNumber limitNumber: Int) {
-        indicatorContainer.addIconWith(iconImage: iconImage, andLimitNumber: limitNumber)
+    func addIconWith(limitNumber: Int, normalIconImage: CGImage, dimmedIconImage: CGImage) {
+        indicatorContainer.addIconWith(limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
     }
     
     func setActiveIndicator() {

@@ -20,14 +20,17 @@ class ViewController: UIViewController {
         slider.backgroundColor = .blue
         
         let iconImage = UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!
-        slider.addIconWith(iconImage: iconImage, andLimitNumber: 30)
+        let dimmedIconImage = UIImage(named: "ic_flash_on")!.tinted(with: UIColor.gray)!.cgImage!
+        slider.addIconWith(limitNumber: 30, normalIconImage: iconImage, dimmedIconImage: dimmedIconImage)
         
-        let iconImage1 = UIImage(named: "ic_camera_front")!.tinted(with: UIColor.white)!.cgImage!
-        slider.addIconWith(iconImage: iconImage1, andLimitNumber: 20)
-
-        let iconImage2 = UIImage(named: "settings")!.tinted(with: UIColor.white)!.cgImage!
-        slider.addIconWith(iconImage: iconImage2, andLimitNumber: 40)
+        let iconImage1 = UIImage(named: "settings")!.tinted(with: UIColor.white)!.cgImage!
+        let dimmedIconImage1 = UIImage(named: "settings")!.tinted(with: UIColor.gray)!.cgImage!
+        slider.addIconWith(limitNumber: 40, normalIconImage: iconImage1, dimmedIconImage: dimmedIconImage1)
         
+        let iconImage2 = UIImage(named: "ic_camera_front")!.tinted(with: UIColor.white)!.cgImage!
+        let dimmedIconImage2 = UIImage(named: "ic_camera_front")!.tinted(with: UIColor.gray)!.cgImage!
+        slider.addIconWith(limitNumber: 20, normalIconImage: iconImage2, dimmedIconImage: dimmedIconImage2)
+                
         view.addSubview(slider)
         slider.setActiveIndicator()
         
