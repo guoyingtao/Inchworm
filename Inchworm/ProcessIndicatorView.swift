@@ -21,7 +21,12 @@ class ProcessIndicatorView: UIView {
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
     
-    var progress: Float = 0.0
+    var progress: Float = 0.0 {
+        didSet {
+            setProgress(progress)
+        }
+    }
+    
     var status: IndicatorStatus = .initial
     
     private lazy var circlePath: UIBezierPath = {
@@ -88,7 +93,7 @@ class ProcessIndicatorView: UIView {
         layer.addSublayer(progressLayer)
         
         minusProgressLayer = getProgressLayer(by: circlePath.reversing().cgPath, and: minusProgressColor.cgColor)
-        layer.addSublayer(minusProgressLayer)        
+        layer.addSublayer(minusProgressLayer)
     }
     
     private func getProgressLayer(by path: CGPath, and color: CGColor) -> CAShapeLayer {
@@ -115,10 +120,8 @@ class ProcessIndicatorView: UIView {
         layer.addSublayer(progressNumberLayer)
     }
     
-    func setProgress(_ progress: Float) {
-        progressNumberLayer.isHidden = false
-        iconLayer.isHidden = true
-        self.progress = progress
+    private func setProgress(_ progress: Float) {
+        change(to: .editing)
         
         if progress > 0 {
             progressLayer.isHidden = false
@@ -142,7 +145,7 @@ class ProcessIndicatorView: UIView {
         }
         
         trackLayer.strokeColor = trackColor.cgColor
-        progressNumberLayer.string = "\(Int(progress * 40))"
+        progressNumberLayer.string = "\(Int(progress * Float(limitNumber)))"
     }
     
     func change(to status: IndicatorStatus) {

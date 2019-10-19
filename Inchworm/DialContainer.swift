@@ -57,6 +57,6 @@ class DialContainer: UIView {
 
 extension DialContainer: SlideRulerDelegate {
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat) {
-        indicatorContainer.activeIndicator?.setProgress(Float(offsetRatio))
+        indicatorContainer.activeIndicator?.progress = Float(offsetRatio)
     }
 }
