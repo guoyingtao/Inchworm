@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ProcessIndicatorViewDelegate {
+    func didActive(_ processIndicatorView: ProcessIndicatorView)
+}
+
 class ProcessIndicatorView: UIView {
     
     fileprivate var progressLayer = CAShapeLayer()
@@ -17,9 +21,17 @@ class ProcessIndicatorView: UIView {
     fileprivate var iconLayer = CALayer()
     
     var limitNumber = 30
-    
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
+    var index = 0
+    
+    var active = false {
+        didSet {
+            if active {
+                delegate?.didActive(self)
+            }
+        }
+    }
     
     var progress: Float = 0.0 {
         didSet {
@@ -28,29 +40,11 @@ class ProcessIndicatorView: UIView {
     }
     
     var status: IndicatorStatus = .initial
+    var delegate: ProcessIndicatorViewDelegate?
     
     private lazy var circlePath: UIBezierPath = {
         UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
     } ()
-    
-    init(frame: CGRect, limitNumber: Int = 30, normalIconImage: CGImage? = nil, dimmedIconImage: CGImage? = nil) {
-        super.init(frame: frame)
-        
-        self.limitNumber = limitNumber
-        self.normalIconImage = normalIconImage
-        self.dimmedIconImage = dimmedIconImage
-        
-        createCircularPath()
-        createProgressNumber()
-        createIcon()
-        
-        change(to: .initial)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        createCircularPath()
-    }
     
     var progressColor = UIColor.white {
         didSet {
@@ -70,6 +64,50 @@ class ProcessIndicatorView: UIView {
         }
     }
     
+    init(frame: CGRect, limitNumber: Int = 30, normalIconImage: CGImage? = nil, dimmedIconImage: CGImage? = nil) {
+        super.init(frame: frame)
+        
+        self.limitNumber = limitNumber
+        self.normalIconImage = normalIconImage
+        self.dimmedIconImage = dimmedIconImage
+        
+        createCircularPath()
+        createProgressNumber()
+        createIcon()
+        change(to: .initial)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tap)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleActivited(notification:)), name: .ProgressIndicatorActivated, object: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    @objc func handleActivited(notification: Notification) {
+        guard let object = notification.object as? ProcessIndicatorView else {
+            return
+        }
+        
+        active = (self === object)
+    }
+    
+    @objc func handleTap() {
+        if active {
+            if status == .tempReset {
+                status = .editing
+            } else {
+                status = .tempReset
+            }
+        } else {
+            active = true
+        }
+        
+        NotificationCenter.default.post(name: .ProgressIndicatorActivated, object: self)
+    }
+        
     fileprivate func createIcon() {
         let iconLayerLength = frame.width / 2
         
@@ -107,7 +145,7 @@ class ProcessIndicatorView: UIView {
         return layer
     }
     
-    func createProgressNumber() {
+    fileprivate func createProgressNumber() {
         progressNumberLayer = CATextLayer()
         progressNumberLayer.foregroundColor = UIColor.white.cgColor
         progressNumberLayer.contentsScale = UIScreen.main.scale
@@ -154,31 +192,26 @@ class ProcessIndicatorView: UIView {
         
         switch status {
         case .initial:
-            // show icon
-            print("initial")
             iconLayer.contents = normalIconImage
         case .tempReset:
-            // show icon
-            // show gray status
-            print("tempReset")
             iconLayer.contents = dimmedIconImage
         case .editing:
-            // show number
-            // show progress
-            print("editing")
             iconLayer.isHidden = true
             progressNumberLayer.isHidden = false
         case .changed:
-            // show icon
-            // show progress
             print("changed")
         }
     }
 }
 
+extension Notification.Name {
+    static let ProgressIndicatorActivated
+                = NSNotification.Name("ProgressIndicatorActivated")
+}
+
 enum IndicatorStatus {
     case initial
-    case tempReset(progress: Int)
+    case tempReset
     case editing
-    case changed(progress: Int)
+    case changed
 }

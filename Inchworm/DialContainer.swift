@@ -50,13 +50,13 @@ class DialContainer: UIView {
         indicatorContainer.addIconWith(limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
     }
     
-    func setActiveIndicator() {
-        indicatorContainer.setActiveIndicator()
+    func setActiveIndicatorIndex(_ index: Int = 0) {
+        indicatorContainer.setActiveIndicatorIndex(index)
     }
 }
 
 extension DialContainer: SlideRulerDelegate {
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat) {
-        indicatorContainer.activeIndicator?.progress = Float(offsetRatio)
+        indicatorContainer.getActiveIndicator()?.progress = Float(offsetRatio)
     }
 }

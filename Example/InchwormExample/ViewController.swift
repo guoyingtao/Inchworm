@@ -32,7 +32,7 @@ class ViewController: UIViewController {
         slider.addIconWith(limitNumber: 20, normalIconImage: iconImage2, dimmedIconImage: dimmedIconImage2)
                 
         view.addSubview(slider)
-        slider.setActiveIndicator()
+        slider.setActiveIndicatorIndex(1)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
