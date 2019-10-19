@@ -127,14 +127,17 @@ extension IndicatorContainer: UIScrollViewDelegate {
 
         targetContentOffset.pointee.x = CGFloat(targetIndex) * pageWidth;
         setActiveIndicatorIndex(targetIndex)
+        
+        guard let processIndicatorView = getActiveIndicator() else { return }
+        if processIndicatorView.status == .editing {
+            self.didActive(processIndicatorView.progress)
+        }
     }
 }
 
 extension IndicatorContainer: ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
-        setActiveIndicatorIndex(processIndicatorView.index, animated: true)
-        
-        guard processIndicatorView.status == .editing else { return }        
+        setActiveIndicatorIndex(processIndicatorView.index, animated: true)        
         self.didActive(processIndicatorView.progress)
     }
     
