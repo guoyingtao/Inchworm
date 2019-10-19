@@ -134,7 +134,7 @@ extension IndicatorContainer: ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
         setActiveIndicatorIndex(processIndicatorView.index, animated: true)
         
-        guard processIndicatorView.status == .changed else { return }        
+        guard processIndicatorView.status == .editing else { return }        
         self.didActive(processIndicatorView.progress)
     }
     

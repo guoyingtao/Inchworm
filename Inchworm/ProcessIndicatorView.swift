@@ -97,10 +97,6 @@ class ProcessIndicatorView: UIView {
             if getProgressValue() == 0 && status != .tempReset {
                 status = .initial
             }
-            
-            if status == .editing {
-                status = .changed
-            }
         }
     }
     
@@ -226,8 +222,6 @@ class ProcessIndicatorView: UIView {
             progressNumberLayer.isHidden = false
             progressLayer.isHidden = false
             minusProgressLayer.isHidden = false
-        case .changed:
-            trackLayer.strokeColor = UIColor.white.cgColor
         }
     }
 }
@@ -241,5 +235,4 @@ enum IndicatorStatus {
     case initial
     case tempReset
     case editing
-    case changed
 }
