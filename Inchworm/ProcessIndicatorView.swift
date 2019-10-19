@@ -10,6 +10,8 @@ import UIKit
 
 protocol ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView)
+    func didTempReset(_ processIndicatorView: ProcessIndicatorView)
+    func didRemoveTempReset(_ processIndicatorView: ProcessIndicatorView)
 }
 
 class ProcessIndicatorView: UIView {
@@ -92,8 +94,12 @@ class ProcessIndicatorView: UIView {
         
         if self !== object {
             active = false
-            if getProgressValue() == 0 {
+            if getProgressValue() == 0 && status != .tempReset {
                 status = .initial
+            }
+            
+            if status == .editing {
+                status = .changed
             }
         }
     }
@@ -102,12 +108,18 @@ class ProcessIndicatorView: UIView {
         if active {
             if status == .tempReset {
                 status = .editing
+                delegate?.didRemoveTempReset(self)
             } else {
                 status = .tempReset
+                delegate?.didTempReset(self)
             }
         } else {
             active = true
             delegate?.didActive(self)
+            
+            if status == .tempReset {
+                delegate?.didTempReset(self)
+            }
         }
         
         NotificationCenter.default.post(name: .ProgressIndicatorActivated, object: self)
@@ -199,6 +211,8 @@ class ProcessIndicatorView: UIView {
         iconLayer.isHidden = false
         progressNumberLayer.isHidden = true
         trackLayer.strokeColor = trackColor.cgColor
+        progressLayer.isHidden = true
+        minusProgressLayer.isHidden = true
         
         switch status {
         case .initial:
@@ -210,8 +224,10 @@ class ProcessIndicatorView: UIView {
         case .editing:
             iconLayer.isHidden = true
             progressNumberLayer.isHidden = false
+            progressLayer.isHidden = false
+            minusProgressLayer.isHidden = false
         case .changed:
-            print("changed")
+            trackLayer.strokeColor = UIColor.white.cgColor
         }
     }
 }

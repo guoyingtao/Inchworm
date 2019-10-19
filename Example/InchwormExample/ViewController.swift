@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         view.addSubview(slider)
         slider.setActiveIndicatorIndex(1)
         
-        view.translatesAutoresizingMaskIntoConstraints = false
+        slider.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             slider.heightAnchor.constraint(equalToConstant: 100),

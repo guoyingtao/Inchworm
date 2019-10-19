@@ -112,6 +112,30 @@ class SlideRuler: UIView {
         
         return bar
     }
+    
+    func handleTempReset() {
+        let offset = CGPoint(x: offsetValue, y: 0)
+        slider.delegate = nil
+        slider.setContentOffset(offset, animated: false)
+        slider.delegate = self
+        
+        centralDot.isHidden = true
+        let color = UIColor.gray.cgColor
+        scaleBarLayer.sublayers?.forEach { $0.backgroundColor = color}
+        majorScaleBarLayer.sublayers?.forEach { $0.backgroundColor = color}
+
+    }
+    
+    func handleRemoveTempResetWith(progress: Float) {
+        centralDot.fillColor = UIColor.white.cgColor
+        
+        scaleBarLayer.sublayers?.forEach { $0.backgroundColor = UIColor.gray.cgColor}
+        majorScaleBarLayer.sublayers?.forEach { $0.backgroundColor = UIColor.white.cgColor}
+
+        
+        let offsetX = CGFloat(progress) * offsetValue + offsetValue
+        slider.contentOffset = CGPoint(x: offsetX, y: 0)
+    }
 }
 
 extension SlideRuler: UIScrollViewDelegate {

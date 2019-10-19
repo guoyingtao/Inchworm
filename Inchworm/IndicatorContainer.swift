@@ -17,6 +17,10 @@ class IndicatorContainer: UIView {
     var pageWidth: CGFloat = 0
     var iconLength: CGFloat = 0
     
+    var didActive: (Float) -> Void = { _ in }
+    var didTempReset = {}
+    var didRemoveTempReset: (Float) -> Void = { _ in }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -47,10 +51,7 @@ class IndicatorContainer: UIView {
         
         let slideContentSize = getSlideContentSize(byIndicatorLength: progressView.frame.width)
         backgroundSlideView.contentSize = CGSize(width: backgroundSlideView.frame.width + slideContentSize.width - progressView.frame.width, height: backgroundSlideView.frame.height)
-        
-//        let offset = CGPoint(x: slideContentSize.width / 2 - progressView.frame.width / 2, y: 0)
-//        backgroundSlideView.contentOffset = offset
-        
+                
         let startX = backgroundSlideView.contentSize.width / 2 - slideContentSize.width / 2
         for i in 0..<progressViewList.count {
             let progressView = progressViewList[i]
@@ -132,5 +133,16 @@ extension IndicatorContainer: UIScrollViewDelegate {
 extension IndicatorContainer: ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
         setActiveIndicatorIndex(processIndicatorView.index, animated: true)
+        
+        guard processIndicatorView.status == .changed else { return }        
+        self.didActive(processIndicatorView.progress)
+    }
+    
+    func didTempReset(_ processIndicatorView: ProcessIndicatorView) {
+        self.didTempReset()
+    }
+    
+    func didRemoveTempReset(_ processIndicatorView: ProcessIndicatorView) {
+        self.didRemoveTempReset(processIndicatorView.progress)
     }
 }
