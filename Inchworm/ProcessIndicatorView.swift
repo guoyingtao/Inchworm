@@ -90,7 +90,12 @@ class ProcessIndicatorView: UIView {
             return
         }
         
-        active = (self === object)
+        if self !== object {
+            active = false
+            if getProgressValue() == 0 {
+                status = .initial
+            }
+        }
     }
     
     @objc func handleTap() {
@@ -183,7 +188,11 @@ class ProcessIndicatorView: UIView {
         }
         
         trackLayer.strokeColor = trackColor.cgColor
-        progressNumberLayer.string = "\(Int(progress * Float(limitNumber)))"
+        progressNumberLayer.string = "\(getProgressValue())"
+    }
+    
+    func getProgressValue() -> Int {
+        Int(progress * Float(limitNumber))
     }
     
     func change(to status: IndicatorStatus) {
@@ -194,6 +203,7 @@ class ProcessIndicatorView: UIView {
         switch status {
         case .initial:
             iconLayer.contents = normalIconImage
+            trackLayer.strokeColor = UIColor.white.cgColor
         case .tempReset:
             iconLayer.contents = dimmedIconImage
             trackLayer.strokeColor = UIColor.gray.cgColor
