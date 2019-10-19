@@ -25,13 +25,7 @@ class ProcessIndicatorView: UIView {
     var dimmedIconImage: CGImage?
     var index = 0
     
-    var active = false {
-        didSet {
-            if active {
-                delegate?.didActive(self)
-            }
-        }
-    }
+    var active = false
     
     var progress: Float = 0.0 {
         didSet {
@@ -39,7 +33,12 @@ class ProcessIndicatorView: UIView {
         }
     }
     
-    var status: IndicatorStatus = .initial
+    var status: IndicatorStatus = .initial {
+        didSet {
+            change(to: status)
+        }
+    }
+    
     var delegate: ProcessIndicatorViewDelegate?
     
     private lazy var circlePath: UIBezierPath = {
@@ -103,6 +102,7 @@ class ProcessIndicatorView: UIView {
             }
         } else {
             active = true
+            delegate?.didActive(self)
         }
         
         NotificationCenter.default.post(name: .ProgressIndicatorActivated, object: self)
@@ -159,7 +159,7 @@ class ProcessIndicatorView: UIView {
     }
     
     private func setProgress(_ progress: Float) {
-        change(to: .editing)
+        status = .editing
         
         if progress > 0 {
             progressLayer.isHidden = false
@@ -189,12 +189,14 @@ class ProcessIndicatorView: UIView {
     func change(to status: IndicatorStatus) {
         iconLayer.isHidden = false
         progressNumberLayer.isHidden = true
+        trackLayer.strokeColor = trackColor.cgColor
         
         switch status {
         case .initial:
             iconLayer.contents = normalIconImage
         case .tempReset:
             iconLayer.contents = dimmedIconImage
+            trackLayer.strokeColor = UIColor.gray.cgColor
         case .editing:
             iconLayer.isHidden = true
             progressNumberLayer.isHidden = false

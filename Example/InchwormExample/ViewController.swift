@@ -17,7 +17,6 @@ class ViewController: UIViewController {
         
         let sliderWidth = view.frame.width - 20
         let slider = DialContainer(frame: CGRect(x: 0, y: view.frame.height - 200, width: sliderWidth, height: 100))
-        slider.backgroundColor = .blue
         
         let iconImage = UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!
         let dimmedIconImage = UIImage(named: "ic_flash_on")!.tinted(with: UIColor.gray)!.cgImage!
@@ -42,7 +41,6 @@ class ViewController: UIViewController {
             slider.widthAnchor.constraint(equalToConstant: sliderWidth)
         ])
     }
-
 }
 
 extension UIImage {

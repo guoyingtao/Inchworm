@@ -24,6 +24,8 @@ class IndicatorContainer: UIView {
         pageWidth = iconLength + span
         
         backgroundSlideView.frame = bounds
+        backgroundSlideView.showsVerticalScrollIndicator = false
+        backgroundSlideView.showsHorizontalScrollIndicator = false
         backgroundSlideView.delegate = self
         addSubview(backgroundSlideView)
     }
@@ -78,6 +80,8 @@ class IndicatorContainer: UIView {
         guard let indicator = getActiveIndicator() else {
             return
         }
+        
+        indicator.active = true
         
         let slideContentSize = getSlideContentSize(byIndicatorLength: iconLength)
         let currentPositon = indicator.center
