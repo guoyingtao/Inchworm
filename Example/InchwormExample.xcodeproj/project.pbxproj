@@ -69,9 +69,9 @@
 			isa = PBXGroup;
 			children = (
 				5FE0BB9B235BE99B007EFB8E /* Inchworm.swift */,
-				5F732C292359026A008B53DA /* ProcessIndicatorView.swift */,
 				5F732C2A2359026A008B53DA /* DialBoard.swift */,
 				5F732C2B2359026A008B53DA /* IndicatorContainer.swift */,
+				5F732C292359026A008B53DA /* ProcessIndicatorView.swift */,
 				5F732C2523579DC5008B53DA /* SlideRuler.swift */,
 				5FE0BB9F235C1123007EFB8E /* SlideRulerValueProvider.swift */,
 				5F732C1123579D89008B53DA /* AppDelegate.swift */,

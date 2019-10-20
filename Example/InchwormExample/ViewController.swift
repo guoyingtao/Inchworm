@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 
         let modelList = [model1, model2, model3]
         
-        let board = createDialBoard(frame: CGRect(x: 0, y: view.frame.height - 100, width: view.frame.width, height: 100), processIndicatorModels: modelList, activeIndex: 1)
+        let board = createDialBoard(frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
         board.delegate = self
         
         let config1 = Config()
@@ -39,16 +39,21 @@ class ViewController: UIViewController {
         let board1 = createDialBoard(config: config1, frame: CGRect(x: view.frame.width - 120, y: 40, width: 120, height: 400), processIndicatorModels: modelList, activeIndex: 1)
         board1.delegate = self
                 
+        let board2 = createDialBoard(frame: CGRect(x: 0, y: 100, width: 200, height: 100), processIndicatorModels: modelList, activeIndex: 1)
+        board.delegate = self
+        
         view.addSubview(board)
         view.addSubview(board1)
+        view.addSubview(board2)
         
         board.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             board.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             board.heightAnchor.constraint(equalToConstant: 200),
             board.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            board.widthAnchor.constraint(equalToConstant: view.frame.width)
+            board.widthAnchor.constraint(equalToConstant: 200)
         ])
+//        board.backgroundColor = .yellow
     }
 }
 

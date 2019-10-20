@@ -43,9 +43,7 @@ class ProcessIndicatorView: UIView {
     
     var delegate: ProcessIndicatorViewDelegate?
     
-    private lazy var circlePath: UIBezierPath = {
-        UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
-    } ()
+    private var circlePath: UIBezierPath!
     
     var progressColor = UIColor.white {
         didSet {
@@ -65,16 +63,23 @@ class ProcessIndicatorView: UIView {
         }
     }
     
+    override var frame: CGRect {
+        didSet {
+            setupUIFrames()
+        }
+    }
+    
     init(frame: CGRect, limitNumber: Int = 30, normalIconImage: CGImage? = nil, dimmedIconImage: CGImage? = nil) {
         super.init(frame: frame)
         
         self.limitNumber = limitNumber
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
-        
+
         createCircularPath()
         createProgressNumber()
         createIcon()
+        setupUIFrames()
         change(to: .initial)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -85,6 +90,21 @@ class ProcessIndicatorView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func setupUIFrames() {
+        circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
+        
+        let iconLayerLength = frame.width / 2
+        
+        iconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
+        
+        progressNumberLayer.frame = CGRect(x: layer.bounds.origin.x, y: ((layer.bounds.height - progressNumberLayer.fontSize) / 2), width: layer.bounds.width, height: layer.bounds.height)
+        
+        layer.cornerRadius = self.frame.size.width/2
+        trackLayer.path = circlePath.cgPath
+        progressLayer.path = circlePath.cgPath
+        minusProgressLayer.path = circlePath.reversing().cgPath
     }
     
     @objc func handleActivited(notification: Notification) {
@@ -122,18 +142,18 @@ class ProcessIndicatorView: UIView {
     }
         
     fileprivate func createIcon() {
-        let iconLayerLength = frame.width / 2
-        
-        iconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
+//        let iconLayerLength = frame.width / 2
+//
+//        iconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
         iconLayer.contentsGravity = .resizeAspect
         layer.addSublayer(iconLayer)
     }
     
     fileprivate func createCircularPath() {
-        self.backgroundColor = UIColor.clear
-        self.layer.cornerRadius = self.frame.size.width/2
-        
-        trackLayer.path = circlePath.cgPath
+        backgroundColor = UIColor.clear
+//        layer.cornerRadius = self.frame.size.width/2
+//
+//        trackLayer.path = circlePath.cgPath
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.strokeColor = trackColor.cgColor
         trackLayer.lineWidth = 2.0
@@ -166,7 +186,7 @@ class ProcessIndicatorView: UIView {
         progressNumberLayer.fontSize = 16
         
         progressNumberLayer.alignmentMode = .center
-        progressNumberLayer.frame = CGRect(x: self.layer.bounds.origin.x, y: ((self.layer.bounds.height - progressNumberLayer.fontSize) / 2), width: self.layer.bounds.width, height: self.layer.bounds.height)
+//        progressNumberLayer.frame = CGRect(x: self.layer.bounds.origin.x, y: ((self.layer.bounds.height - progressNumberLayer.fontSize) / 2), width: self.layer.bounds.width, height: self.layer.bounds.height)
         
         layer.addSublayer(progressNumberLayer)
     }

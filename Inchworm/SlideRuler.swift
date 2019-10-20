@@ -70,10 +70,12 @@ class SlideRuler: UIView {
         slider.frame = bounds
 
         offsetValue = frame.width / 2
+        slider.delegate = nil
         slider.contentSize = CGSize(width: frame.width * 2, height: frame.height)
         slider.contentOffset = CGPoint(x: offsetValue, y: 0)
+        slider.delegate = self
 
-        pointer.frame = CGRect(x: (frame.width / 2 - pointerWidth / 2), y: 0, width: pointerWidth, height: frame.height)
+        pointer.frame = CGRect(x: (frame.width / 2 - pointerWidth / 2), y: bounds.origin.y, width: pointerWidth, height: frame.height)
         
         centralDot.frame = CGRect(x: frame.width - dotWidth / 2, y: frame.height * 0.2, width: dotWidth, height: dotWidth)
         centralDot.path = UIBezierPath(ovalIn: centralDot.bounds).cgPath
