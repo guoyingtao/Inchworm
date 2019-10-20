@@ -21,8 +21,11 @@ class IndicatorContainer: UIView {
     var didTempReset = {}
     var didRemoveTempReset: (Float) -> Void = { _ in }
     
-    override init(frame: CGRect) {
+    var orientation: Orientation = .horizontal
+    
+    init(orientation: Orientation = .horizontal, frame: CGRect) {
         super.init(frame: frame)
+        self.orientation = orientation
         
         iconLength = min(frame.width, frame.height)
         pageWidth = iconLength + span
@@ -56,6 +59,12 @@ class IndicatorContainer: UIView {
         for i in 0..<progressViewList.count {
             let progressView = progressViewList[i]
             progressView.center = CGPoint(x: startX + CGFloat(i) * (progressView.frame.width + span) + progressView.frame.width / 2, y: backgroundSlideView.frame.height / 2)
+        }
+        
+        if orientation == .horizontal {
+            progressView.transform = CGAffineTransform(rotationAngle: 0)
+        } else {
+            progressView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
         }
     }
     

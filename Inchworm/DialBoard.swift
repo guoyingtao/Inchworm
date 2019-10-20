@@ -18,12 +18,12 @@ public class DialBoard: UIView {
     var slideRuler: SlideRuler!
     var delegate: DialBoardDelegate?
     
-    override init(frame: CGRect) {
+    init(orientation: Orientation = .horizontal, frame: CGRect, indicatorLength: CGFloat = 50) {
         super.init(frame: frame)
         
         clipsToBounds = true
         
-        indicatorContainer = IndicatorContainer(frame: CGRect(x: 0, y: 0, width: frame.width, height: 50))
+        indicatorContainer = IndicatorContainer(orientation: orientation, frame: CGRect(x: 0, y: 0, width: frame.width, height: 50))
         slideRuler = SlideRuler(frame: CGRect(x: 0, y: frame.height / 2, width: frame.width, height: frame.height - indicatorContainer.frame.height))
         slideRuler.delegate = self
         

@@ -18,6 +18,7 @@
 		5F732C2D2359026B008B53DA /* DialBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C2A2359026A008B53DA /* DialBoard.swift */; };
 		5F732C2E2359026B008B53DA /* IndicatorContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C2B2359026A008B53DA /* IndicatorContainer.swift */; };
 		5FE0BB9C235BE99B007EFB8E /* Inchworm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE0BB9B235BE99B007EFB8E /* Inchworm.swift */; };
+		5FE0BBA0235C1123007EFB8E /* SlideRulerValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE0BB9F235C1123007EFB8E /* SlideRulerValueProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		5F732C2A2359026A008B53DA /* DialBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DialBoard.swift; path = ../../Inchworm/DialBoard.swift; sourceTree = "<group>"; };
 		5F732C2B2359026A008B53DA /* IndicatorContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndicatorContainer.swift; path = ../../Inchworm/IndicatorContainer.swift; sourceTree = "<group>"; };
 		5FE0BB9B235BE99B007EFB8E /* Inchworm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Inchworm.swift; path = ../../Inchworm/Inchworm.swift; sourceTree = "<group>"; };
+		5FE0BB9F235C1123007EFB8E /* SlideRulerValueProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SlideRulerValueProvider.swift; path = ../../Inchworm/SlideRulerValueProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				5F732C2A2359026A008B53DA /* DialBoard.swift */,
 				5F732C2B2359026A008B53DA /* IndicatorContainer.swift */,
 				5F732C2523579DC5008B53DA /* SlideRuler.swift */,
+				5FE0BB9F235C1123007EFB8E /* SlideRulerValueProvider.swift */,
 				5F732C1123579D89008B53DA /* AppDelegate.swift */,
 				5F732C1323579D89008B53DA /* SceneDelegate.swift */,
 				5F732C1523579D89008B53DA /* ViewController.swift */,
@@ -161,6 +164,7 @@
 				5F732C2623579DC5008B53DA /* SlideRuler.swift in Sources */,
 				5F732C2C2359026B008B53DA /* ProcessIndicatorView.swift in Sources */,
 				5F732C1423579D89008B53DA /* SceneDelegate.swift in Sources */,
+				5FE0BBA0235C1123007EFB8E /* SlideRulerValueProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
