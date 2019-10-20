@@ -40,10 +40,6 @@ class IndicatorContainer: UIView {
         super.init(frame: frame)
         self.orientation = orientation
         
-//        iconLength = min(frame.width, frame.height)
-//        pageWidth = iconLength + span
-//
-//        backgroundSlideView.frame = bounds
         backgroundSlideView.showsVerticalScrollIndicator = false
         backgroundSlideView.showsHorizontalScrollIndicator = false
         backgroundSlideView.delegate = self

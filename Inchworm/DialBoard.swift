@@ -106,6 +106,8 @@ public class DialBoard: UIView {
             containerHoritontalHeightConstraint.isActive = true
             containerVerticalWidthConstraint.isActive = false
             containerVerticalHeightConstraint.isActive = false
+            
+            container.transform = .identity
         } else {
             containerHorizontalWidthConstraint.isActive = false
             containerHoritontalHeightConstraint.isActive = false

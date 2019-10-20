@@ -9,6 +9,19 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    var horizontalWidthConstraint: NSLayoutConstraint!
+    var horizontalHeightConstraint: NSLayoutConstraint!
+    var horizontalCenterXConstraint: NSLayoutConstraint!
+    var horizontalBottomConstraint: NSLayoutConstraint!
+    
+    var verticalWidthConstraint: NSLayoutConstraint!
+    var verticalHeightConstraint: NSLayoutConstraint!
+    var verticalCenterYConstraint: NSLayoutConstraint!
+    var verticalTrailingConstraint: NSLayoutConstraint!
+    
+    var horizontal = true
+    let config = Config()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,41 +43,59 @@ class ViewController: UIViewController {
 
         let modelList = [model1, model2, model3]
         
-        let board = createDialBoard(frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
+        let board = createDialBoard(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
         board.delegate = self
         
-        let config1 = Config()
-        
-        // CGRect(x: view.frame.width - 120, y: 40, width: 120, height: 400)
-        let board1 = createDialBoard(config: config1, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
-        board1.delegate = self
-                
-        let board2 = createDialBoard(frame: CGRect(x: 0, y: 100, width: 200, height: 100), processIndicatorModels: modelList, activeIndex: 1)
-        board.delegate = self
         
         view.addSubview(board)
-        view.addSubview(board1)
-        view.addSubview(board2)
         
         board.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            board.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            board.heightAnchor.constraint(equalToConstant: 200),
-            board.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            board.widthAnchor.constraint(equalToConstant: 300)
-        ])
-
-        board1.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            board1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            board1.heightAnchor.constraint(equalToConstant: 600),
-            board1.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            board1.widthAnchor.constraint(equalToConstant: 120)
-        ])
         
-        config1.orientation = .vertical
+        horizontalWidthConstraint = board.widthAnchor.constraint(equalToConstant: 300)
+        horizontalHeightConstraint = board.heightAnchor.constraint(equalToConstant: 120)
+        horizontalCenterXConstraint = board.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        horizontalBottomConstraint = board.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+
+        verticalWidthConstraint = board.widthAnchor.constraint(equalToConstant: 120)
+        verticalHeightConstraint = board.heightAnchor.constraint(equalToConstant: 400)
+        verticalCenterYConstraint = board.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        verticalTrailingConstraint = board.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        
+        toggle()
+    }
+    
+    @IBAction func toggle() {
+        if horizontal {
+            config.orientation = .horizontal
+            
+            horizontalWidthConstraint.isActive = true
+            horizontalHeightConstraint.isActive = true
+            horizontalCenterXConstraint.isActive = true
+            horizontalBottomConstraint.isActive = true
+            
+            verticalWidthConstraint.isActive = false
+            verticalHeightConstraint.isActive = false
+            verticalCenterYConstraint.isActive = false
+            verticalTrailingConstraint.isActive = false
+        } else {
+            config.orientation = .vertical
+            
+            horizontalWidthConstraint.isActive = false
+            horizontalHeightConstraint.isActive = false
+            horizontalCenterXConstraint.isActive = false
+            horizontalBottomConstraint.isActive = false
+            
+            verticalWidthConstraint.isActive = true
+            verticalHeightConstraint.isActive = true
+            verticalCenterYConstraint.isActive = true
+            verticalTrailingConstraint.isActive = true
+        }
+        
+        horizontal = !horizontal
     }
 }
+
+
 
 extension ViewController: DialBoardDelegate {
     func didGetOffsetRatio(_ board: DialBoard, indicatorIndex: Int, offsetRatio: Float) {
