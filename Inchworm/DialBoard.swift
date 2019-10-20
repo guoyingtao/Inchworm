@@ -8,10 +8,15 @@
 
 import UIKit
 
-class DialBoard: UIView {
+public protocol DialBoardDelegate {
+    func didGetOffsetRatio(_ board: DialBoard, indicatorIndex: Int, offsetRatio: Float)
+}
+
+public class DialBoard: UIView {
 
     var indicatorContainer: IndicatorContainer!
-    var slideRuler: SlideRuler!    
+    var slideRuler: SlideRuler!
+    var delegate: DialBoardDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,15 +28,19 @@ class DialBoard: UIView {
         slideRuler.delegate = self
         
         indicatorContainer.didActive = { [weak self] progress in
-            self?.slideRuler.handleRemoveTempResetWith(progress: progress)
+            self?.setSlideRulerBy(progress: progress)
         }
         
         indicatorContainer.didTempReset = { [weak self] in
-            self?.slideRuler.handleTempReset()
+            guard let self = self else { return }
+            self.slideRuler.handleTempReset()
+            
+            let activeIndex = self.indicatorContainer.activeIndicatorIndex
+            self.delegate?.didGetOffsetRatio(self, indicatorIndex: activeIndex, offsetRatio: 0)
         }
         
         indicatorContainer.didRemoveTempReset = { [weak self] progress in
-            self?.slideRuler.handleRemoveTempResetWith(progress: progress)
+            self?.setSlideRulerBy(progress: progress)
         }
         
         addSubview(indicatorContainer)
@@ -48,11 +57,21 @@ class DialBoard: UIView {
     
     func setActiveIndicatorIndex(_ index: Int = 0) {
         indicatorContainer.setActiveIndicatorIndex(index)
-    }    
+    }
+    
+    func setSlideRulerBy(progress: Float) {
+        slideRuler.handleRemoveTempResetWith(progress: progress)
+        
+        let activeIndex = indicatorContainer.activeIndicatorIndex
+        delegate?.didGetOffsetRatio(self, indicatorIndex: activeIndex, offsetRatio: progress)
+    }
 }
 
 extension DialBoard: SlideRulerDelegate {
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat) {
         indicatorContainer.getActiveIndicator()?.progress = Float(offsetRatio)
+        
+        let activeIndex = indicatorContainer.activeIndicatorIndex
+        delegate?.didGetOffsetRatio(self, indicatorIndex: activeIndex, offsetRatio: Float(offsetRatio))
     }
 }

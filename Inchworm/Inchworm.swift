@@ -8,13 +8,13 @@
 
 import UIKit
 
-struct ProcessIndicatorModel {
+public struct ProcessIndicatorModel {
     var limitNumber = 0
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
 }
 
-func createDialBoard(frame: CGRect, processIndicatorModels: [ProcessIndicatorModel], activeIndex: Int) -> DialBoard {
+public func createDialBoard(frame: CGRect, processIndicatorModels: [ProcessIndicatorModel], activeIndex: Int) -> DialBoard {
     let board = DialBoard(frame: frame)
     
     processIndicatorModels.forEach{

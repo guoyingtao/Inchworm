@@ -31,6 +31,7 @@ class ViewController: UIViewController {
         let modelList = [model1, model2, model3]
         
         let board = createDialBoard(frame: CGRect(x: 0, y: view.frame.height - 100, width: view.frame.width, height: 100), processIndicatorModels: modelList, activeIndex: 1)
+        board.delegate = self
                 
         view.addSubview(board)
         
@@ -41,6 +42,12 @@ class ViewController: UIViewController {
             board.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             board.widthAnchor.constraint(equalToConstant: view.frame.width)
         ])
+    }
+}
+
+extension ViewController: DialBoardDelegate {
+    func didGetOffsetRatio(_ board: DialBoard, indicatorIndex: Int, offsetRatio: Float) {
+        print("No \(indicatorIndex) indicator has a offset(\(offsetRatio))")
     }
 }
 
