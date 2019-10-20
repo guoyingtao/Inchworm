@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         let config1 = Config()
         config1.orientation = .vertical
         
-        let board1 = createDialBoard(config: config1, frame: CGRect(x: view.frame.width - 100, y: 40, width: 100, height: 400), processIndicatorModels: modelList, activeIndex: 1)
+        let board1 = createDialBoard(config: config1, frame: CGRect(x: view.frame.width - 120, y: 40, width: 120, height: 400), processIndicatorModels: modelList, activeIndex: 1)
         board1.delegate = self
                 
         view.addSubview(board)
@@ -45,7 +45,7 @@ class ViewController: UIViewController {
         board.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             board.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            board.heightAnchor.constraint(equalToConstant: 100),
+            board.heightAnchor.constraint(equalToConstant: 200),
             board.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             board.widthAnchor.constraint(equalToConstant: view.frame.width)
         ])

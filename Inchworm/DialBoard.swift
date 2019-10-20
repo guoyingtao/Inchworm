@@ -18,13 +18,13 @@ public class DialBoard: UIView {
     var slideRuler: SlideRuler!
     var delegate: DialBoardDelegate?
     
-    init(orientation: Orientation = .horizontal, frame: CGRect, indicatorLength: CGFloat = 50) {
+    init(config: Config = Config(), frame: CGRect) {
         super.init(frame: frame)
         
         clipsToBounds = true
         
-        indicatorContainer = IndicatorContainer(orientation: orientation, frame: CGRect(x: 0, y: 0, width: frame.width, height: 50))
-        slideRuler = SlideRuler(frame: CGRect(x: 0, y: frame.height / 2, width: frame.width, height: frame.height - indicatorContainer.frame.height))
+        indicatorContainer = IndicatorContainer(orientation: config.orientation, frame: CGRect(x: 0, y: 0, width: frame.width, height: config.indicatorSpan))
+        slideRuler = SlideRuler(frame: CGRect(x: 0, y: frame.height / 2, width: frame.width, height: frame.height - config.slideRulerSpan))
         slideRuler.delegate = self
         
         indicatorContainer.didActive = { [weak self] progress in
@@ -44,7 +44,22 @@ public class DialBoard: UIView {
         }
         
         addSubview(indicatorContainer)
-        addSubview(slideRuler)        
+        addSubview(slideRuler)
+        
+        indicatorContainer.translatesAutoresizingMaskIntoConstraints = false
+        slideRuler.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            indicatorContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
+            indicatorContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+            indicatorContainer.topAnchor.constraint(equalTo: topAnchor),
+            indicatorContainer.heightAnchor.constraint(equalToConstant: config.indicatorSpan),
+            
+            slideRuler.leadingAnchor.constraint(equalTo: leadingAnchor),
+            slideRuler.trailingAnchor.constraint(equalTo: trailingAnchor),
+            slideRuler.topAnchor.constraint(equalTo: indicatorContainer.bottomAnchor, constant: config.spaceBetweenIndicatorAndSlideRule),
+            slideRuler.heightAnchor.constraint(equalToConstant: config.slideRulerSpan)
+        ])
     }
     
     required init?(coder: NSCoder) {
