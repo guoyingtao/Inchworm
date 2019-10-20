@@ -43,7 +43,6 @@ class SlideRuler: UIView {
     
     override var bounds: CGRect {
         didSet {
-            print("old is \(oldValue), new is \(bounds)")
             setUIFrames()
         }
     }
