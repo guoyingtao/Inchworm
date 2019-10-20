@@ -34,9 +34,9 @@ class ViewController: UIViewController {
         board.delegate = self
         
         let config1 = Config()
-        config1.orientation = .vertical
         
-        let board1 = createDialBoard(config: config1, frame: CGRect(x: view.frame.width - 120, y: 40, width: 120, height: 400), processIndicatorModels: modelList, activeIndex: 1)
+        // CGRect(x: view.frame.width - 120, y: 40, width: 120, height: 400)
+        let board1 = createDialBoard(config: config1, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
         board1.delegate = self
                 
         let board2 = createDialBoard(frame: CGRect(x: 0, y: 100, width: 200, height: 100), processIndicatorModels: modelList, activeIndex: 1)
@@ -51,9 +51,18 @@ class ViewController: UIViewController {
             board.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             board.heightAnchor.constraint(equalToConstant: 200),
             board.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            board.widthAnchor.constraint(equalToConstant: 200)
+            board.widthAnchor.constraint(equalToConstant: 300)
         ])
-//        board.backgroundColor = .yellow
+
+        board1.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            board1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            board1.heightAnchor.constraint(equalToConstant: 600),
+            board1.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            board1.widthAnchor.constraint(equalToConstant: 120)
+        ])
+        
+        config1.orientation = .vertical
     }
 }
 

@@ -74,7 +74,6 @@ class IndicatorContainer: UIView {
         for i in 0..<progressIndicatorViewList.count {
             let progressView = progressIndicatorViewList[i]
             progressView.center = CGPoint(x: startX + CGFloat(i) * (progressView.frame.width + span) + progressView.frame.width / 2, y: backgroundSlideView.frame.height / 2)
-//            print("progress frame is \(progressView.frame)")
         }
     }
     

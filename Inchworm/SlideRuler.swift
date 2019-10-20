@@ -23,6 +23,7 @@ class SlideRuler: UIView {
     let pointer = CALayer()
     let centralDot = CAShapeLayer()
     let slider = UIScrollView()
+    var sliderOffsetRatio: CGFloat = 0.5
     
     let scaleBarLayer: CAReplicatorLayer = {
         var r = CAReplicatorLayer()
@@ -66,14 +67,20 @@ class SlideRuler: UIView {
         setUIFrames()
     }
     
+    @objc func setSliderDelegate() {
+        slider.delegate = self
+    }
+    
     public func setUIFrames() {
         slider.frame = bounds
 
-        offsetValue = frame.width / 2
+        offsetValue = sliderOffsetRatio * slider.frame.width
         slider.delegate = nil
         slider.contentSize = CGSize(width: frame.width * 2, height: frame.height)
         slider.contentOffset = CGPoint(x: offsetValue, y: 0)
-        slider.delegate = self
+        
+        perform(#selector(setSliderDelegate), with: nil, afterDelay: 0.1)
+        // slider.delegate = self
 
         pointer.frame = CGRect(x: (frame.width / 2 - pointerWidth / 2), y: bounds.origin.y, width: pointerWidth, height: frame.height)
         
@@ -197,5 +204,9 @@ extension SlideRuler: UIScrollViewDelegate {
         if offsetRatio < -1 { offsetRatio = -1.0 }
         
         delegate?.didGetOffsetRatio(from: self, offsetRatio: offsetRatio)
+        
+        if scrollView.frame.width > 0 {
+            sliderOffsetRatio = scrollView.contentOffset.x / scrollView.frame.width
+        }
     }
 }

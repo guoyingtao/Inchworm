@@ -15,16 +15,8 @@ public struct ProcessIndicatorModel {
 }
 
 public func createDialBoard(config: Config = Config(), frame: CGRect, processIndicatorModels: [ProcessIndicatorModel], activeIndex: Int) -> DialBoard {
-    let board: DialBoard
-    
-    if config.orientation == .horizontal {
-        board = DialBoard(config: config, frame: frame)
-    } else {
-        let newFrame = CGRect(x: frame.origin.x - (frame.height / 2 - frame.width / 2), y: frame.origin.y + frame.height / 2 - frame.width / 2, width: frame.height, height: frame.width)
-        board = DialBoard(config: config, frame: newFrame)
-        board.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
-    }
-        
+    let board: DialBoard = DialBoard(config: config, frame: frame)
+                    
     processIndicatorModels.forEach {
         board.addIconWith(limitNumber: $0.limitNumber, normalIconImage: $0.normalIconImage, dimmedIconImage: $0.dimmedIconImage)
     }
@@ -34,18 +26,18 @@ public func createDialBoard(config: Config = Config(), frame: CGRect, processInd
     return board
 }
 
-public class Config {
-    var orientation: Orientation = .horizontal
+@objc public class Config: NSObject {
+    @objc dynamic var orientation: Orientation = .horizontal
     var indicatorSpan: CGFloat = 50
     var slideRulerSpan: CGFloat = 50
     var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
     
-    public init() {
+    public override init() {
         
     }
 }
 
-public enum Orientation {
+@objc public enum Orientation: Int {
     case horizontal
     case vertical
 }
