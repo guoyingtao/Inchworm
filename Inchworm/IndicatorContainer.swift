@@ -38,7 +38,7 @@ class IndicatorContainer: UIView {
         super.init(coder: coder)
     }
     
-    func addIconWith(limitNumber: Int, normalIconImage: CGImage, dimmedIconImage: CGImage) {
+    func addIconWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
         let progressView = ProcessIndicatorView(frame: CGRect(x: 0, y: 0, width: iconLength, height: iconLength), limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
         progressView.delegate = self
         progressView.index = progressViewList.count
