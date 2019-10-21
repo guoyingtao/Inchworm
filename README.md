@@ -10,7 +10,6 @@ A rule-style UI tool for adjusting values
     <img src="Images/horizontal2.png" height="200" alt="Inchworm" />
     <img src="Images/horizontal3.png" height="200" alt="Inchworm" />
     <img src="Images/horizontal4.png" height="200" alt="Inchworm" />
-    <img src="Images/horizontal5.png" height="200" alt="Inchworm" />
     <img src="Images/vertical.png" height="200" alt="Inchworm" />
 </p>
 
