@@ -21,7 +21,7 @@ class ProcessIndicatorContainer: UIView {
     var didTempReset = {}
     var didRemoveTempReset: (Float) -> Void = { _ in }
     
-    var orientation: Orientation = .horizontal
+    var orientation: SliderOrientation = .horizontal
     
     override var bounds: CGRect {
         didSet {
@@ -29,7 +29,7 @@ class ProcessIndicatorContainer: UIView {
         }
     }
     
-    init(orientation: Orientation = .horizontal, frame: CGRect) {
+    init(orientation: SliderOrientation = .horizontal, frame: CGRect) {
         super.init(frame: frame)
         self.orientation = orientation
         
@@ -78,7 +78,7 @@ class ProcessIndicatorContainer: UIView {
         }
     }
     
-    func addIconWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
+    func addIndicatorWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
         let indicatorView = ProcessIndicatorView(frame: CGRect(x: 0, y: 0, width: iconLength, height: iconLength), limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
         indicatorView.delegate = self
         indicatorView.index = progressIndicatorViewList.count

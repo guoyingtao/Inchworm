@@ -42,6 +42,7 @@ public class Slider: UIView {
         
     init(config: Config = Config(), frame: CGRect) {
         super.init(frame: frame)
+        
         self.config = config
         
         observer = self.config.observe(\.orientation, options: .new) { [weak self] _, _ in
@@ -124,24 +125,34 @@ public class Slider: UIView {
     
     func adjustContainerByOrientation() {
         if config.orientation == .horizontal {
-            containerHorizontalWidthConstraint.isActive = true
-            containerHoritontalHeightConstraint.isActive = true
-            containerVerticalWidthConstraint.isActive = false
-            containerVerticalHeightConstraint.isActive = false
+            NSLayoutConstraint.deactivate([
+                containerVerticalWidthConstraint,
+                containerVerticalHeightConstraint
+            ])
             
+            NSLayoutConstraint.activate([
+                containerHorizontalWidthConstraint,
+                containerHoritontalHeightConstraint
+            ])
+
             baseContainer.transform = .identity
         } else {
-            containerHorizontalWidthConstraint.isActive = false
-            containerHoritontalHeightConstraint.isActive = false
-            containerVerticalWidthConstraint.isActive = true
-            containerVerticalHeightConstraint.isActive = true
-            
+            NSLayoutConstraint.deactivate([
+                containerHorizontalWidthConstraint,
+                containerHoritontalHeightConstraint
+            ])
+
+            NSLayoutConstraint.activate([
+                containerVerticalWidthConstraint,
+                containerVerticalHeightConstraint
+            ])
+                        
             baseContainer.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
         }
     }
     
-    func addIconWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
-        indicatorContainer.addIconWith(limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
+    func addIndicatorWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
+        indicatorContainer.addIndicatorWith(limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
     }
     
     func setActiveIndicatorIndex(_ index: Int = 0) {

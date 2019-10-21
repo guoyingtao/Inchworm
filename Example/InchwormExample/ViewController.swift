@@ -44,22 +44,22 @@ class ViewController: UIViewController {
 
         let modelList = [model1, model2, model3]
         
-        let board = createSlider(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
-        board.delegate = self        
+        let slider = createSlider(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
+        slider.delegate = self        
         
-        view.addSubview(board)
+        view.addSubview(slider)
         
-        board.translatesAutoresizingMaskIntoConstraints = false
+        slider.translatesAutoresizingMaskIntoConstraints = false
         
-        horizontalWidthConstraint = board.widthAnchor.constraint(equalToConstant: 300)
-        horizontalHeightConstraint = board.heightAnchor.constraint(equalToConstant: 120)
-        horizontalCenterXConstraint = board.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        horizontalBottomConstraint = board.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        horizontalWidthConstraint = slider.widthAnchor.constraint(equalToConstant: 300)
+        horizontalHeightConstraint = slider.heightAnchor.constraint(equalToConstant: 120)
+        horizontalCenterXConstraint = slider.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        horizontalBottomConstraint = slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 
-        verticalWidthConstraint = board.widthAnchor.constraint(equalToConstant: 120)
-        verticalHeightConstraint = board.heightAnchor.constraint(equalToConstant: 400)
-        verticalCenterYConstraint = board.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        verticalTrailingConstraint = board.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        verticalWidthConstraint = slider.widthAnchor.constraint(equalToConstant: 120)
+        verticalHeightConstraint = slider.heightAnchor.constraint(equalToConstant: 400)
+        verticalCenterYConstraint = slider.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        verticalTrailingConstraint = slider.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         
         toggle()
     }
@@ -68,27 +68,36 @@ class ViewController: UIViewController {
         if horizontal {
             config.orientation = .horizontal
             
-            horizontalWidthConstraint.isActive = true
-            horizontalHeightConstraint.isActive = true
-            horizontalCenterXConstraint.isActive = true
-            horizontalBottomConstraint.isActive = true
+            NSLayoutConstraint.deactivate([
+                verticalWidthConstraint,
+                verticalHeightConstraint,
+                verticalCenterYConstraint,
+                verticalTrailingConstraint
+            ])
+
+            NSLayoutConstraint.activate([
+                horizontalWidthConstraint,
+                horizontalHeightConstraint,
+                horizontalCenterXConstraint,
+                horizontalBottomConstraint
+            ])
             
-            verticalWidthConstraint.isActive = false
-            verticalHeightConstraint.isActive = false
-            verticalCenterYConstraint.isActive = false
-            verticalTrailingConstraint.isActive = false
         } else {
             config.orientation = .vertical
             
-            horizontalWidthConstraint.isActive = false
-            horizontalHeightConstraint.isActive = false
-            horizontalCenterXConstraint.isActive = false
-            horizontalBottomConstraint.isActive = false
+            NSLayoutConstraint.deactivate([
+                horizontalWidthConstraint,
+                horizontalHeightConstraint,
+                horizontalCenterXConstraint,
+                horizontalBottomConstraint
+            ])
             
-            verticalWidthConstraint.isActive = true
-            verticalHeightConstraint.isActive = true
-            verticalCenterYConstraint.isActive = true
-            verticalTrailingConstraint.isActive = true
+            NSLayoutConstraint.activate([
+                verticalWidthConstraint,
+                verticalHeightConstraint,
+                verticalCenterYConstraint,
+                verticalTrailingConstraint
+            ])
         }
         
         horizontal = !horizontal

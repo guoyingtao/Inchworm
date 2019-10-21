@@ -28,7 +28,7 @@ public func createSlider(config: Config = Config(),
     let board: Slider = Slider(config: config, frame: frame)
                     
     processIndicatorModels.forEach {
-        board.addIconWith(limitNumber: $0.limitNumber, normalIconImage: $0.normalIconImage, dimmedIconImage: $0.dimmedIconImage)
+        board.addIndicatorWith(limitNumber: $0.limitNumber, normalIconImage: $0.normalIconImage, dimmedIconImage: $0.dimmedIconImage)
     }
     
     board.setActiveIndicatorIndex(activeIndex)
@@ -37,7 +37,9 @@ public func createSlider(config: Config = Config(),
 }
 
 @objc public class Config: NSObject {
-    @objc public dynamic var orientation: Orientation = .horizontal
+    // You can change the orientation about passing config to a Slider
+    @objc public dynamic var orientation: SliderOrientation = .horizontal
+    
     public var indicatorSpan: CGFloat = 50
     public var slideRulerSpan: CGFloat = 50
     public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
@@ -47,7 +49,7 @@ public func createSlider(config: Config = Config(),
     }
 }
 
-@objc public enum Orientation: Int {
+@objc public enum SliderOrientation: Int {
     case horizontal
     case vertical
 }
