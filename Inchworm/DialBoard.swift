@@ -23,7 +23,7 @@ public class DialBoard: UIView {
     var config: Config! {
         didSet {
             if oldValue.orientation != config.orientation {
-                setContainerConstraint()
+                handleConfigChange()
             }            
         }
     }
@@ -40,7 +40,7 @@ public class DialBoard: UIView {
         self.config = config
         
         observer = self.config.observe(\.orientation, options: .new) { [weak self] config, change in
-            self?.setContainerConstraint()
+            self?.handleConfigChange()
         }
         
         container.frame = bounds
@@ -100,6 +100,12 @@ public class DialBoard: UIView {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    func handleConfigChange() {
+        setContainerConstraint()
+        indicatorContainer.orientation = config.orientation
+        indicatorContainer.handleBoundsChange()
     }
     
     func setContainerConstraint() {

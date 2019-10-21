@@ -25,14 +25,7 @@ class IndicatorContainer: UIView {
     
     override var bounds: CGRect {
         didSet {
-            setupUIFrames()
-            
-            progressIndicatorViewList.forEach {
-                $0.frame = CGRect(x: 0, y: 0, width: iconLength, height: iconLength)
-            }
-            
-            rerangeIndicators()
-            setActiveIndicatorIndex(activeIndicatorIndex)
+            handleBoundsChange()
         }
     }
     
@@ -53,6 +46,18 @@ class IndicatorContainer: UIView {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    func handleBoundsChange() {
+        setupUIFrames()
+        
+        progressIndicatorViewList.forEach { [weak self] in
+            $0.frame = CGRect(x: 0, y: 0, width: iconLength, height: iconLength)
+            self?.setOrientations(for: $0)
+        }
+        
+        rerangeIndicators()
+        setActiveIndicatorIndex(activeIndicatorIndex)
     }
     
     func setupUIFrames() {
@@ -80,14 +85,17 @@ class IndicatorContainer: UIView {
         
         progressIndicatorViewList.append(indicatorView)
         backgroundSlideView.addSubview(indicatorView)
-                        
+                                
+        setOrientations(for: indicatorView)
+        rerangeIndicators()
+    }
+    
+    func setOrientations(for indicatorView: ProcessIndicatorView) {
         if orientation == .horizontal {
             indicatorView.transform = CGAffineTransform(rotationAngle: 0)
         } else {
             indicatorView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
         }
-        
-        rerangeIndicators()
     }
     
     func getSlideContentSize() -> CGSize {
