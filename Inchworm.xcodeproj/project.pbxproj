@@ -40,7 +40,7 @@
 		5F732C0123578ED7008B53DA /* ProcessIndicatorContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessIndicatorContainer.swift; sourceTree = "<group>"; };
 		5F732C0323578F67008B53DA /* SlideRuler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuler.swift; sourceTree = "<group>"; };
 		5F732C2F235942BD008B53DA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		5FE0BBA1235D4CDB007EFB8E /* Inchworm.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Inchworm.podspec; sourceTree = "<group>"; };
+		5FE0BBA1235D4CDB007EFB8E /* Inchworm.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Inchworm.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		5FE0BBA3235DFB10007EFB8E /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessIndicatorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,12 +87,8 @@
 		5F732BE523578DF2008B53DA /* Inchworm */ = {
 			isa = PBXGroup;
 			children = (
+				5FFD2417235E37FA00602F3A /* Source */,
 				5F732BE623578DF2008B53DA /* Inchworm.h */,
-				5F732BFD23578E57008B53DA /* Inchworm.swift */,
-				5FE0BBA3235DFB10007EFB8E /* Slider.swift */,
-				5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */,
-				5F732C0123578ED7008B53DA /* ProcessIndicatorContainer.swift */,
-				5F732C0323578F67008B53DA /* SlideRuler.swift */,
 				5F732BE723578DF2008B53DA /* Info.plist */,
 			);
 			path = Inchworm;
@@ -105,6 +101,18 @@
 				5F732BF323578DF2008B53DA /* Info.plist */,
 			);
 			path = InchwormTests;
+			sourceTree = "<group>";
+		};
+		5FFD2417235E37FA00602F3A /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5F732BFD23578E57008B53DA /* Inchworm.swift */,
+				5FE0BBA3235DFB10007EFB8E /* Slider.swift */,
+				5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */,
+				5F732C0123578ED7008B53DA /* ProcessIndicatorContainer.swift */,
+				5F732C0323578F67008B53DA /* SlideRuler.swift */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,6 +391,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.echo.Inchworm;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -409,6 +418,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.echo.Inchworm;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

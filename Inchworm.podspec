@@ -24,9 +24,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "11.0"
   s.source       = { :git => "https://github.com/guoyingtao/Inchworm.git", :tag => "#{s.version}" }
   s.source_files  = "Inchworm/**/*.{h,swift}"
-  s.resource_bundles = {
-    "Resource" => ["Inchworm/**/*.lproj/*.strings"]
-  }
+  #s.exclude_files = "Inchworm/**/Info.plist"
   
   #  s.info_plist = {
   #   "CFBundleIdentifier" => "com.echo.framework.Inchworm"
