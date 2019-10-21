@@ -7,4 +7,5 @@ target 'InchwormExample' do
 
   # Pods for InchwormExample
    pod 'Inchworm', :path => '../'
+#   pod 'Inchworm'
 end

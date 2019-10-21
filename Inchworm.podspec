@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name         = "Inchworm"
   s.version      = "0.1"
-  s.summary      = "A swift value adjusting tool which mimics the slider to set value in Photo.app in iOS 13"
+  s.summary      = "A swift slider-style value adjusting tool"
 
   s.description  = <<-DESC
         A swift value adjusting tool which mimics the slider to set value in Photo.app in iOS 13

@@ -2,15 +2,15 @@ PODS:
   - Inchworm (0.1)
 
 DEPENDENCIES:
-  - Inchworm (from `../`)
+  - Inchworm
 
-EXTERNAL SOURCES:
-  Inchworm:
-    :path: "../"
+SPEC REPOS:
+  trunk:
+    - Inchworm
 
 SPEC CHECKSUMS:
-  Inchworm: 5990525e6a3a79f0aefd35b6667cc662eb23a139
+  Inchworm: 116adb753cce2e9e1562eddedc40f41968e03530
 
-PODFILE CHECKSUM: a5218a0b86c68c9be6d68cc3eb5c22ee522d1428
+PODFILE CHECKSUM: 146d738dd50086fbb909ca09899271ab7a8f331e
 
-COCOAPODS: 1.8.0.beta.2
+COCOAPODS: 1.8.4
