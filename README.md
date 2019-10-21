@@ -1,12 +1,16 @@
-# Inchworm
-
-#Inchworm
-
-A rule-style UI tool for adjusting values
-
 <p align="center">
     <img src="logo.jpg" height="120" max-width="90%" alt="Inchworm" />
 </p>
+
+<p align="center">
+    <img src="https://img.shields.io/badge/swift-5.0-orange.svg" alt="swift 5.0 badge" />
+    <img src="https://img.shields.io/badge/platform-iOS-lightgrey.svg" alt="platform iOS badge" />
+    <img src="https://img.shields.io/badge/license-MIT-black.svg" alt="license MIT badge" />   
+</p>
+
+# Inchworm
+
+A rule-style UI tool for adjusting values
 
 <p align="center">
     <img src="Images/horizontal1.png" height="380" alt="Inchworm" />
@@ -47,13 +51,13 @@ let modelList = [model1, model2, model3]
 
 let config = Inchworm.Config()
 
-let board = createDialBoard(config: config, frame: <Your Frame>, processIndicatorModels: modelList, activeIndex: 1)
+let board = createSlider(config: config, frame: <Your Frame>, processIndicatorModels: modelList, activeIndex: 1)
 ```
 
 * The caller needs to conform DialBoardDelegate
 ```swift
-public protocol DialBoardDelegate {
-    func didGetOffsetRatio(_ board: DialBoard, indicatorIndex: Int, offsetRatio: Float)
+public protocol SliderDelegate {
+func didGetOffsetRatio(_ slider: Inchworm.Slider, activeIndicatorIndex: Int, offsetRatio: Float)
 }
 ```
 

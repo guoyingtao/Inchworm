@@ -1,5 +1,5 @@
 //
-//  IndicatorContainer.swift
+//  ProcessIndicatorContainer.swift
 //  Inchworm
 //
 //  Created by Echo on 10/16/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IndicatorContainer: UIView {
+class ProcessIndicatorContainer: UIView {
 
     var progressIndicatorViewList: [ProcessIndicatorView] = []
     var backgroundSlideView = UIScrollView()
@@ -141,7 +141,7 @@ class IndicatorContainer: UIView {
     }
 }
 
-extension IndicatorContainer: UIScrollViewDelegate {
+extension ProcessIndicatorContainer: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
         let kMaxIndex = progressIndicatorViewList.count
@@ -175,7 +175,7 @@ extension IndicatorContainer: UIScrollViewDelegate {
     }
 }
 
-extension IndicatorContainer: ProcessIndicatorViewDelegate {
+extension ProcessIndicatorContainer: ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
         setActiveIndicatorIndex(processIndicatorView.index, animated: true)        
         self.didActive(processIndicatorView.progress)

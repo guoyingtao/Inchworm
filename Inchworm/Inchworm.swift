@@ -20,8 +20,12 @@ public struct ProcessIndicatorModel {
     }
 }
 
-public func createDialBoard(config: Config = Config(), frame: CGRect, processIndicatorModels: [ProcessIndicatorModel], activeIndex: Int) -> DialBoard {
-    let board: DialBoard = DialBoard(config: config, frame: frame)
+// You can set frame to CGRecte.zero if you are using Autolayout
+public func createSlider(config: Config = Config(),
+                            frame: CGRect,
+                            processIndicatorModels: [ProcessIndicatorModel],
+                            activeIndex: Int) -> Slider {
+    let board: Slider = Slider(config: config, frame: frame)
                     
     processIndicatorModels.forEach {
         board.addIconWith(limitNumber: $0.limitNumber, normalIconImage: $0.normalIconImage, dimmedIconImage: $0.dimmedIconImage)

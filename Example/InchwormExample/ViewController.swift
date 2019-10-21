@@ -44,7 +44,7 @@ class ViewController: UIViewController {
 
         let modelList = [model1, model2, model3]
         
-        let board = createDialBoard(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
+        let board = createSlider(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
         board.delegate = self        
         
         view.addSubview(board)
@@ -97,8 +97,8 @@ class ViewController: UIViewController {
 
 
 
-extension ViewController: DialBoardDelegate {
-    func didGetOffsetRatio(_ board: DialBoard, indicatorIndex: Int, offsetRatio: Float) {
+extension ViewController: Inchworm.SliderDelegate {
+    func didGetOffsetRatio(_ slider: Inchworm.Slider, activeIndicatorIndex indicatorIndex: Int, offsetRatio: Float) {
         print("No \(indicatorIndex) indicator has a offset(\(offsetRatio))")
     }
 }
