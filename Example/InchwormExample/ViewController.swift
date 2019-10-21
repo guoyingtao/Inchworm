@@ -107,8 +107,8 @@ class ViewController: UIViewController {
 
 
 extension ViewController: Inchworm.SliderDelegate {
-    func didGetOffsetRatio(_ slider: Inchworm.Slider, activeIndicatorIndex indicatorIndex: Int, offsetRatio: Float) {
-        print("No \(indicatorIndex) indicator has a offset(\(offsetRatio))")
+    func didGetOffsetRatio(_ slider: Inchworm.Slider, activeIndicatorIndex: Int, offsetRatio: Float) {
+        print("No \(activeIndicatorIndex) indicator has a offset(\(offsetRatio))")
     }
 }
 

@@ -123,6 +123,7 @@ public class Slider: UIView {
         ])
     }
     
+    // Deactivate first, then activate!
     func adjustContainerByOrientation() {
         if config.orientation == .horizontal {
             NSLayoutConstraint.deactivate([
