@@ -31,21 +31,30 @@ pod 'Inchworm', '~> 0.1'
 
 ``` swift
 let model1 = ProcessIndicatorModel(limitNumber: 30,
-                                   normalIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!,
-                                   dimmedIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.gray)!.cgImage!)
+                                   normalIconImage: <NormalIconImage1>,
+                                   dimmedIconImage: <DimmedIconImage1>)
 
 let model2 = ProcessIndicatorModel(limitNumber: 40,
-                                   normalIconImage: UIImage(named: "settings")!.tinted(with: UIColor.white)!.cgImage!,
-                                   dimmedIconImage: UIImage(named: "settings")!.tinted(with: UIColor.gray)!.cgImage!)
+                                   normalIconImage: <NormalIconImage2>,
+                                   dimmedIconImage: <DimmedIconImage2>)
 
 let model3 = ProcessIndicatorModel(limitNumber: 20,
-                                   normalIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.white)!.cgImage!,
-                                   dimmedIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.gray)!.cgImage!)
+                                   normalIconImage: <NormalIconImage3>,
+                                   dimmedIconImage: <DimmedIconImage3>)
 
 
 let modelList = [model1, model2, model3]
 
-let board = createDialBoard(config: <Your Config>, frame: <Your Frame>, processIndicatorModels: modelList, activeIndex: 1)
+let config = Inchworm.Config()
+
+let board = createDialBoard(config: config, frame: <Your Frame>, processIndicatorModels: modelList, activeIndex: 1)
+```
+
+* The caller needs to conform DialBoardDelegate
+```swift
+public protocol DialBoardDelegate {
+    func didGetOffsetRatio(_ board: DialBoard, indicatorIndex: Int, offsetRatio: Float)
+}
 ```
 
 

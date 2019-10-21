@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     var verticalTrailingConstraint: NSLayoutConstraint!
     
     var horizontal = true
-    let config = Config()
+    let config = Inchworm.Config()
 
     override func viewDidLoad() {
         super.viewDidLoad()

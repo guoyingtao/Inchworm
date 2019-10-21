@@ -87,13 +87,13 @@
 		5F732BE523578DF2008B53DA /* Inchworm */ = {
 			isa = PBXGroup;
 			children = (
+				5F732BE623578DF2008B53DA /* Inchworm.h */,
+				5F732BFD23578E57008B53DA /* Inchworm.swift */,
 				5FE0BBA3235DFB10007EFB8E /* DialBoard.swift */,
 				5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */,
-				5F732BE623578DF2008B53DA /* Inchworm.h */,
-				5F732BE723578DF2008B53DA /* Info.plist */,
-				5F732BFD23578E57008B53DA /* Inchworm.swift */,
 				5F732C0123578ED7008B53DA /* IndicatorContainer.swift */,
 				5F732C0323578F67008B53DA /* SlideRuler.swift */,
+				5F732BE723578DF2008B53DA /* Info.plist */,
 			);
 			path = Inchworm;
 			sourceTree = "<group>";
