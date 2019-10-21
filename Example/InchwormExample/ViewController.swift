@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Inchworm
 
 class ViewController: UIViewController {
     
@@ -44,8 +45,7 @@ class ViewController: UIViewController {
         let modelList = [model1, model2, model3]
         
         let board = createDialBoard(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
-        board.delegate = self
-        
+        board.delegate = self        
         
         view.addSubview(board)
         

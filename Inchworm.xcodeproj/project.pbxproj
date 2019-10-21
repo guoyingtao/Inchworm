@@ -16,6 +16,7 @@
 		5F732C0423578F67008B53DA /* SlideRuler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C0323578F67008B53DA /* SlideRuler.swift */; };
 		5F732C2823581287008B53DA /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F732C2723581287008B53DA /* CircularProgressView.swift */; };
 		5F732C30235942BD008B53DA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5F732C2F235942BD008B53DA /* README.md */; };
+		5FE0BBA2235D4CDB007EFB8E /* Inchworm.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 5FE0BBA1235D4CDB007EFB8E /* Inchworm.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		5F732C0323578F67008B53DA /* SlideRuler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuler.swift; sourceTree = "<group>"; };
 		5F732C2723581287008B53DA /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		5F732C2F235942BD008B53DA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5FE0BBA1235D4CDB007EFB8E /* Inchworm.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Inchworm.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 		5F732BD923578DF2008B53DA = {
 			isa = PBXGroup;
 			children = (
+				5FE0BBA1235D4CDB007EFB8E /* Inchworm.podspec */,
 				5F732C2F235942BD008B53DA /* README.md */,
 				5F732BE523578DF2008B53DA /* Inchworm */,
 				5F732BF023578DF2008B53DA /* InchwormTests */,
@@ -198,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F732C30235942BD008B53DA /* README.md in Resources */,
+				5FE0BBA2235D4CDB007EFB8E /* Inchworm.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

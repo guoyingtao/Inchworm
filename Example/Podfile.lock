@@ -1,0 +1,16 @@
+PODS:
+  - Inchworm (0.1)
+
+DEPENDENCIES:
+  - Inchworm (from `../`)
+
+EXTERNAL SOURCES:
+  Inchworm:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Inchworm: 36613f7c2fef9ddfcf3117b10e18b8221d7377c5
+
+PODFILE CHECKSUM: a5218a0b86c68c9be6d68cc3eb5c22ee522d1428
+
+COCOAPODS: 1.8.0.beta.2

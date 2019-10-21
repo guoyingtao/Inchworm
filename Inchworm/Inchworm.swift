@@ -12,6 +12,12 @@ public struct ProcessIndicatorModel {
     var limitNumber = 0
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
+    
+    public init(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
+        self.limitNumber = limitNumber
+        self.normalIconImage = normalIconImage
+        self.dimmedIconImage = dimmedIconImage
+    }
 }
 
 public func createDialBoard(config: Config = Config(), frame: CGRect, processIndicatorModels: [ProcessIndicatorModel], activeIndex: Int) -> DialBoard {
@@ -27,10 +33,10 @@ public func createDialBoard(config: Config = Config(), frame: CGRect, processInd
 }
 
 @objc public class Config: NSObject {
-    @objc dynamic var orientation: Orientation = .horizontal
-    var indicatorSpan: CGFloat = 50
-    var slideRulerSpan: CGFloat = 50
-    var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
+    @objc public dynamic var orientation: Orientation = .horizontal
+    public var indicatorSpan: CGFloat = 50
+    public var slideRulerSpan: CGFloat = 50
+    public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
     
     public override init() {
         

@@ -14,9 +14,11 @@ public protocol DialBoardDelegate {
 
 public class DialBoard: UIView {
 
+    public var delegate: DialBoardDelegate?
+    
     var indicatorContainer: IndicatorContainer!
     var slideRuler: SlideRuler!
-    var delegate: DialBoardDelegate?
+    
     var container = UIView()
     var config: Config! {
         didSet {
