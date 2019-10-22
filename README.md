@@ -10,7 +10,7 @@
 
 # Inchworm
 
-A rule-style UI tool for adjusting values
+A ruler-style UI tool for adjusting values
 
 <p align="center">
     <img src="Images/horizontal1.png" height="380" alt="Inchworm" />
