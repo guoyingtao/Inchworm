@@ -31,7 +31,7 @@ pod 'Inchworm', '~> 0.1'
 
 ## Usage
 
-* create a Slider
+* Create a Slider
 
 ``` swift
 let model1 = ProcessIndicatorModel(limitNumber: 30,
