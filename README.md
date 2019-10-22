@@ -10,7 +10,7 @@
 
 # Inchworm
 
-A ruler-style UI tool for adjusting values
+A slider for adjusting values just like the one in Photo.app in iOS 13
 
 <p align="center">
     <img src="Images/horizontal1.png" height="380" alt="Inchworm" />
