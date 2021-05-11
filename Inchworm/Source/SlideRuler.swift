@@ -19,7 +19,7 @@ protocol SlideRulerDelegate {
 }
 
 class SlideRuler: UIView {
-    
+    var forceAlignCenterFeedback = true
     let pointer = CALayer()
     let centralDot = CAShapeLayer()
     let slider = UIScrollView()
@@ -188,10 +188,29 @@ extension SlideRuler: UIScrollViewDelegate {
         
         let limit = frame.width / CGFloat((scaleBarNumber - 1) * 2)
         if abs(slider.contentOffset.x - frame.width / 2) < limit && abs(speed.x) < 10.0 {
+            
             if !reset {
                 reset = true
-                let offset = CGPoint(x: frame.width / 2, y: 0)
-                scrollView.setContentOffset(offset, animated: false)
+                
+                if forceAlignCenterFeedback {
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                }
+                
+                func forceAlignCenter() {
+                    let offset = CGPoint(x: frame.width / 2, y: 0)
+                    scrollView.setContentOffset(offset, animated: false)
+                    delegate?.didGetOffsetRatio(from: self, offsetRatio: 0)
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    forceAlignCenter()
+                }
+                
+                forceAlignCenter()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.11) {
+                    usleep(1000000)
+                }
             }
         } else {
             reset = false
