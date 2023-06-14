@@ -86,7 +86,17 @@ public class Slider: UIView {
     }
     
     func createSlideRuler() {
-        slideRuler = SlideRuler(frame: CGRect(x: 0, y: baseContainer.frame.height / 2, width: baseContainer.frame.width, height: baseContainer.frame.height - config.slideRulerSpan))
+        let sliderFrame = CGRect(x: 0, y: baseContainer.frame.height / 2, width: baseContainer.frame.width, height: baseContainer.frame.height - config.slideRulerSpan)
+        
+        let slideRulerPositionProvider: SliderRulerPositionInfoProvider
+        switch config.sliderZeroPositionType {
+        case .middle:
+            slideRulerPositionProvider = MiddleStyleSliderRulerPositionInfoProvider()
+        case .left:
+            slideRulerPositionProvider = LeftStyleSliderRulerPositionInfoProvider()
+        }
+        
+        slideRuler = SlideRuler(frame: sliderFrame, positionInfoProvider: slideRulerPositionProvider)
         slideRuler.delegate = self
         slideRuler.forceAlignCenterFeedback = config.forceAlignCenterFeedback
     }

@@ -37,10 +37,7 @@ class ProcessIndicatorContainer: UIView {
         backgroundSlideView.showsHorizontalScrollIndicator = false
         backgroundSlideView.delegate = self
         addSubview(backgroundSlideView)
-        
-        // iF you want a customized page width, comment this one
-        // backgroundSlideView.isPagingEnabled = true
-        
+                
         setupUIFrames()
     }
     

@@ -44,6 +44,7 @@ public func createSlider(config: Config = Config(),
     public var slideRulerSpan: CGFloat = 50
     public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
     public var forceAlignCenterFeedback = true
+    public var sliderZeroPositionType: SliderZeroPositionType = .middle
     
     public override init() {
         
@@ -53,4 +54,9 @@ public func createSlider(config: Config = Config(),
 @objc public enum SliderOrientation: Int {
     case horizontal
     case vertical
+}
+
+public enum SliderZeroPositionType {
+    case middle
+    case left
 }

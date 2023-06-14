@@ -22,12 +22,14 @@ class ViewController: UIViewController {
     var verticalTrailingConstraint: NSLayoutConstraint!
     
     var horizontal = true
-    let config = Inchworm.Config()
+    var config = Inchworm.Config()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black
+        
+        config.sliderZeroPositionType = .left
                 
         let model1 = ProcessIndicatorModel(limitNumber: 30,
                                            normalIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!,
