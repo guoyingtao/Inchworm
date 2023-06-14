@@ -60,7 +60,7 @@ class SlideRuler: UIView {
     }
     
     private func setupUI() {
-        sliderOffsetRatio = positionInfoProvider.getOffsetRatio()
+        sliderOffsetRatio = positionInfoProvider.getInitialOffsetRatio()
         
         setupSlider()
         makeRuler()
