@@ -26,11 +26,7 @@ public class Slider: UIView {
     */
     var baseContainer = UIView()
     
-    var config: Config! {
-        didSet {
-            handleConfigChange()
-        }
-    }
+    var config: Config!
     
     // You can active different constraints for different orientation
     var containerHorizontalWidthConstraint: NSLayoutConstraint!
@@ -38,17 +34,11 @@ public class Slider: UIView {
     var containerVerticalWidthConstraint: NSLayoutConstraint!
     var containerVerticalHeightConstraint: NSLayoutConstraint!
     
-    var observer: NSObjectProtocol?
-        
     init(config: Config = Config(), frame: CGRect) {
         super.init(frame: frame)
         
         self.config = config
-        
-        observer = self.config.observe(\.orientation, options: .new) { [weak self] _, _ in
-            self?.handleConfigChange()
-        }
-                        
+                                
         createIndicatorContainer()
         createSlideRuler()
         
@@ -91,13 +81,7 @@ public class Slider: UIView {
         slideRuler.delegate = self
         slideRuler.forceAlignCenterFeedback = config.forceAlignCenterFeedback
     }
-    
-    func handleConfigChange() {
-        adjustContainerByOrientation()
-        indicatorContainer.orientation = config.orientation
-        indicatorContainer.handleBoundsChange()
-    }
-    
+        
     func initialAutolayoutConstraint() {
         baseContainer.translatesAutoresizingMaskIntoConstraints = false
         indicatorContainer.translatesAutoresizingMaskIntoConstraints = false

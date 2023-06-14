@@ -9,7 +9,6 @@
 import UIKit
 
 class ProcessIndicatorContainer: UIView {
-
     var progressIndicatorViewList: [ProcessIndicatorView] = []
     var backgroundSlideView = UIScrollView()
     var activeIndicatorIndex = 0

@@ -10,27 +10,62 @@ import UIKit
 import Inchworm
 
 class ViewController: UIViewController {
-    
-    var horizontalWidthConstraint: NSLayoutConstraint!
-    var horizontalHeightConstraint: NSLayoutConstraint!
-    var horizontalCenterXConstraint: NSLayoutConstraint!
-    var horizontalBottomConstraint: NSLayoutConstraint!
-    
-    var verticalWidthConstraint: NSLayoutConstraint!
-    var verticalHeightConstraint: NSLayoutConstraint!
-    var verticalCenterYConstraint: NSLayoutConstraint!
-    var verticalTrailingConstraint: NSLayoutConstraint!
-    
-    var horizontal = true
-    var config = Inchworm.Config()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black
         
+        createMiddleTypeSlider()
+        createLeftTypeSlider()
+        
+        createVerticalSlider()
+    }
+    
+    func createMiddleTypeSlider() {
+        var config = Config()
+        config.sliderZeroPositionType = .middle
+        let slider = createSlider(with: config)
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            slider.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
+            slider.heightAnchor.constraint(equalToConstant: 120),
+            slider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150)
+        ])
+    }
+    
+    func createLeftTypeSlider() {
+        var config = Config()
         config.sliderZeroPositionType = .left
-                
+        
+        let slider = createSlider(with: config)
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            slider.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
+            slider.heightAnchor.constraint(equalToConstant: 120),
+            slider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    func createVerticalSlider() {
+        var config = Config()
+        config.orientation = .vertical
+        let slider = createSlider(with: config)
+
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            slider.widthAnchor.constraint(equalToConstant: 120),
+            slider.heightAnchor.constraint(equalToConstant: 400),
+            slider.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            slider.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+
+    func createSlider(with config: Config) -> UIView {
         let model1 = ProcessIndicatorModel(limitNumber: 30,
                                            normalIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.gray)!.cgImage!)
@@ -46,63 +81,12 @@ class ViewController: UIViewController {
 
         let modelList = [model1, model2, model3]
         
-        let slider = createSlider(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
-        slider.delegate = self        
+        let slider = Inchworm.createSlider(config: config, frame: .zero, processIndicatorModels: modelList, activeIndex: 1)
+        slider.delegate = self
         
         view.addSubview(slider)
         
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        
-        horizontalWidthConstraint = slider.widthAnchor.constraint(equalToConstant: 300)
-        horizontalHeightConstraint = slider.heightAnchor.constraint(equalToConstant: 120)
-        horizontalCenterXConstraint = slider.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        horizontalBottomConstraint = slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-
-        verticalWidthConstraint = slider.widthAnchor.constraint(equalToConstant: 120)
-        verticalHeightConstraint = slider.heightAnchor.constraint(equalToConstant: 400)
-        verticalCenterYConstraint = slider.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        verticalTrailingConstraint = slider.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        
-        toggle()
-    }
-    
-    @IBAction func toggle() {
-        if horizontal {
-            config.orientation = .horizontal
-            
-            NSLayoutConstraint.deactivate([
-                verticalWidthConstraint,
-                verticalHeightConstraint,
-                verticalCenterYConstraint,
-                verticalTrailingConstraint
-            ])
-
-            NSLayoutConstraint.activate([
-                horizontalWidthConstraint,
-                horizontalHeightConstraint,
-                horizontalCenterXConstraint,
-                horizontalBottomConstraint
-            ])
-            
-        } else {
-            config.orientation = .vertical
-            
-            NSLayoutConstraint.deactivate([
-                horizontalWidthConstraint,
-                horizontalHeightConstraint,
-                horizontalCenterXConstraint,
-                horizontalBottomConstraint
-            ])
-            
-            NSLayoutConstraint.activate([
-                verticalWidthConstraint,
-                verticalHeightConstraint,
-                verticalCenterYConstraint,
-                verticalTrailingConstraint
-            ])
-        }
-        
-        horizontal = !horizontal
+        return slider
     }
 }
 

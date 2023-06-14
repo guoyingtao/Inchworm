@@ -36,22 +36,20 @@ public func createSlider(config: Config = Config(),
     return board
 }
 
-@objc public class Config: NSObject {
-    // You can change the orientation about passing config to a Slider
-    @objc public dynamic var orientation: SliderOrientation = .horizontal
-    
+public struct Config {
+    public var orientation: SliderOrientation = .horizontal    
     public var indicatorSpan: CGFloat = 50
     public var slideRulerSpan: CGFloat = 50
     public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
     public var forceAlignCenterFeedback = true
     public var sliderZeroPositionType: SliderZeroPositionType = .middle
     
-    public override init() {
+    public init() {
         
     }
 }
 
-@objc public enum SliderOrientation: Int {
+public enum SliderOrientation: Int {
     case horizontal
     case vertical
 }
