@@ -20,7 +20,9 @@ public struct ProcessIndicatorModel {
     }
 }
 
-// You can set frame to CGRecte.zero if you are using Autolayout
+/**
+ You can set frame to CGRecte.zero if Autolayout is used
+ */
 public func createSlider(config: Config = Config(),
                             frame: CGRect,
                             processIndicatorModels: [ProcessIndicatorModel],

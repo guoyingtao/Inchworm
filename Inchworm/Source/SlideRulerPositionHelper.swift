@@ -1,5 +1,5 @@
 //
-//  SliderRulerPositionInfoProvider.swift
+//  SlideRulerPositionHelper.swift
 //  Inchworm
 //
 //  Created by Yingtao Guo on 6/14/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SliderRulerPositionInfoProvider {
+protocol SlideRulerPositionHelper {
     var slideRuler: SlideRuler! { get set }
     func getInitialOffsetRatio() -> CGFloat
     func getCentralDotOriginX() -> CGFloat
@@ -18,11 +18,11 @@ protocol SliderRulerPositionInfoProvider {
     func handleOffsetRatioWhenScrolling(_ scrollView: UIScrollView)
 }
 
-extension SliderRulerPositionInfoProvider {
+extension SlideRulerPositionHelper {
     func handleOffsetRatioWhenScrolling(_ scrollView: UIScrollView) {}
 }
 
-class UnilateralTypeSliderRulerPositionInfoProvider: SliderRulerPositionInfoProvider {
+class UnilateralTypeSlideRulerPositionHelper: SlideRulerPositionHelper {
     var slideRuler: SlideRuler!
     
     func getInitialOffsetRatio() -> CGFloat {
@@ -51,7 +51,7 @@ class UnilateralTypeSliderRulerPositionInfoProvider: SliderRulerPositionInfoProv
     }
 }
 
-class BilateralTypeSliderRulerPositionInfoProvider: SliderRulerPositionInfoProvider {
+class BilateralTypeSlideRulerPositionHelper: SlideRulerPositionHelper {
     var slideRuler: SlideRuler!
     
     func getInitialOffsetRatio() -> CGFloat {

@@ -15,11 +15,11 @@ protocol ProcessIndicatorViewDelegate {
 }
 
 class ProcessIndicatorView: UIView {
-    fileprivate var progressLayer = CAShapeLayer()
-    fileprivate var minusProgressLayer = CAShapeLayer()
-    fileprivate var trackLayer = CAShapeLayer()
-    fileprivate var progressNumberLayer = CATextLayer()
-    fileprivate var iconLayer = CALayer()
+    private var progressLayer = CAShapeLayer()
+    private var minusProgressLayer = CAShapeLayer()
+    private var trackLayer = CAShapeLayer()
+    private var progressNumberLayer = CATextLayer()
+    private var iconLayer = CALayer()
     
     let trackColorVlue = UIColor(displayP3Red: 55.0 / 255.0, green: 45.0 / 255.0, blue: 9.0 / 255.0, alpha: 1)
     let minusTrackColorValue = UIColor(displayP3Red: 84.0 / 255.0, green: 84.0 / 255.0, blue: 84.0 / 255.0, alpha: 1)
@@ -150,12 +150,12 @@ class ProcessIndicatorView: UIView {
         NotificationCenter.default.post(name: .ProgressIndicatorActivated, object: self)
     }
         
-    fileprivate func createIcon() {
+    private func createIcon() {
         iconLayer.contentsGravity = .resizeAspect
         layer.addSublayer(iconLayer)
     }
     
-    fileprivate func createCircularPath() {
+    private func createCircularPath() {
         backgroundColor = UIColor.clear
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.strokeColor = trackColor.cgColor
@@ -181,7 +181,7 @@ class ProcessIndicatorView: UIView {
         return layer
     }
     
-    fileprivate func createProgressNumber() {
+    private func createProgressNumber() {
         progressNumberLayer = CATextLayer()
         progressNumberLayer.foregroundColor = UIColor.white.cgColor
         progressNumberLayer.contentsScale = UIScreen.main.scale

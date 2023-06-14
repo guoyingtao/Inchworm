@@ -24,7 +24,7 @@ class SlideRuler: UIView {
     let scrollRulerView = UIScrollView()
     let dotWidth: CGFloat = 6
     var sliderOffsetRatio: CGFloat = 0.5
-    var positionInfoProvider: SliderRulerPositionInfoProvider
+    var positionInfoProvider: SlideRulerPositionHelper
     
     let scaleBarLayer: CAReplicatorLayer = {
         var r = CAReplicatorLayer()
@@ -51,9 +51,9 @@ class SlideRuler: UIView {
     init(frame: CGRect, sliderValueRangeType: SliderValueRangeType) {
         switch sliderValueRangeType {
         case .bilateral:
-            self.positionInfoProvider = BilateralTypeSliderRulerPositionInfoProvider()
+            self.positionInfoProvider = BilateralTypeSlideRulerPositionHelper()
         case .unilateral:
-            self.positionInfoProvider = UnilateralTypeSliderRulerPositionInfoProvider()
+            self.positionInfoProvider = UnilateralTypeSlideRulerPositionHelper()
         }
 
         super.init(frame: frame)
