@@ -15,13 +15,12 @@ class ViewController: UIViewController {
         
         view.backgroundColor = .black
         
-        createMiddleTypeSlider()
-        createLeftTypeSlider()
-        
-        createVerticalSlider()
+        createHorizontalMiddleTypeSlider()
+        createHorizontalLeftTypeSlider()        
+        createVerticalMiddleTypeSlider()
     }
     
-    func createMiddleTypeSlider() {
+    func createHorizontalMiddleTypeSlider() {
         var config = Config()
         config.sliderZeroPositionType = .middle
         let slider = createSlider(with: config)
@@ -35,7 +34,7 @@ class ViewController: UIViewController {
         ])
     }
     
-    func createLeftTypeSlider() {
+    func createHorizontalLeftTypeSlider() {
         var config = Config()
         config.sliderZeroPositionType = .left
         
@@ -50,7 +49,7 @@ class ViewController: UIViewController {
         ])
     }
     
-    func createVerticalSlider() {
+    func createVerticalMiddleTypeSlider() {
         var config = Config()
         config.orientation = .vertical
         let slider = createSlider(with: config)
