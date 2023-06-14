@@ -42,7 +42,7 @@ public struct Config {
     public var slideRulerSpan: CGFloat = 50
     public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
     public var forceAlignCenterFeedback = true
-    public var sliderZeroPositionType: SliderZeroPositionType = .middle
+    public var sliderValueRangeType: SliderValueRangeType = .bilateral
     
     public init() {
         
@@ -54,7 +54,7 @@ public enum SliderOrientation: Int {
     case vertical
 }
 
-public enum SliderZeroPositionType {
-    case middle
-    case left
+public enum SliderValueRangeType {
+    case bilateral
+    case unilateral
 }
