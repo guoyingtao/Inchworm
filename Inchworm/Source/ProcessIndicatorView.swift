@@ -15,12 +15,14 @@ protocol ProcessIndicatorViewDelegate {
 }
 
 class ProcessIndicatorView: UIView {
-    
     fileprivate var progressLayer = CAShapeLayer()
     fileprivate var minusProgressLayer = CAShapeLayer()
     fileprivate var trackLayer = CAShapeLayer()
     fileprivate var progressNumberLayer = CATextLayer()
     fileprivate var iconLayer = CALayer()
+    
+    let trackColorVlue = UIColor(displayP3Red: 55.0 / 255.0, green: 45.0 / 255.0, blue: 9.0 / 255.0, alpha: 1)
+    let minusTrackColorValue = UIColor(displayP3Red: 84.0 / 255.0, green: 84.0 / 255.0, blue: 84.0 / 255.0, alpha: 1)
     
     var limitNumber = 30
     var normalIconImage: CGImage?
@@ -200,7 +202,7 @@ class ProcessIndicatorView: UIView {
             
             progressLayer.path = circlePath.cgPath
             progressColor = UIColor(displayP3Red: 247.0 / 255.0, green: 198.0 / 255.0, blue: 0, alpha: 1)
-            trackColor = UIColor(displayP3Red: 55.0 / 255.0, green: 45.0 / 255.0, blue: 9.0 / 255.0, alpha: 1)
+            trackColor = trackColorVlue
             progressLayer.strokeColor = progressColor.cgColor
             progressLayer.strokeEnd = abs(CGFloat(progress))
             progressNumberLayer.foregroundColor = progressColor.cgColor
@@ -208,8 +210,8 @@ class ProcessIndicatorView: UIView {
             progressLayer.isHidden = true
             minusProgressLayer.isHidden = false
             
-            minusProgressColor = UIColor(displayP3Red: 203.0 / 255.0, green: 203.0 / 255.0, blue: 203.0 / 255.0, alpha: 1)
-            trackColor = UIColor(displayP3Red: 84.0 / 255.0, green: 84.0 / 255.0, blue: 84.0 / 255.0, alpha: 1)
+            minusProgressColor = .white
+            trackColor = minusTrackColorValue
             minusProgressLayer.strokeColor = minusProgressColor.cgColor
             minusProgressLayer.strokeEnd = abs(CGFloat(progress))
             progressNumberLayer.foregroundColor = minusProgressColor.cgColor
@@ -239,14 +241,14 @@ class ProcessIndicatorView: UIView {
             trackLayer.strokeColor = UIColor.gray.cgColor
         case .editingSelf:
             iconLayer.contents = normalIconImage
-            trackLayer.strokeColor = UIColor.white.cgColor
+            trackLayer.strokeColor = (progress > 0 ? trackColorVlue : minusTrackColorValue).cgColor
             iconLayer.isHidden = true
             progressNumberLayer.isHidden = false
             progressLayer.isHidden = false
             minusProgressLayer.isHidden = false
         case .editingOthers:
             iconLayer.contents = normalIconImage
-            trackLayer.strokeColor = UIColor.white.cgColor
+            trackLayer.strokeColor = (progress > 0 ? trackColorVlue : minusTrackColorValue).cgColor
             iconLayer.isHidden = false
             progressNumberLayer.isHidden = true
             progressLayer.isHidden = false
