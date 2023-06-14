@@ -48,8 +48,14 @@ class SlideRuler: UIView {
         }
     }
     
-    init(frame: CGRect, positionInfoProvider: SliderRulerPositionInfoProvider) {
-        self.positionInfoProvider = positionInfoProvider
+    init(frame: CGRect, sliderZeroPositionType: SliderZeroPositionType) {
+        switch sliderZeroPositionType {
+        case .middle:
+            self.positionInfoProvider = LeftStyleSliderRulerPositionInfoProvider()
+        case .left:
+            self.positionInfoProvider = MiddleStyleSliderRulerPositionInfoProvider()
+        }
+
         super.init(frame: frame)
         self.positionInfoProvider.slideRuler = self
         setupUI()
