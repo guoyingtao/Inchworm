@@ -114,8 +114,13 @@ class ProcessIndicatorView: UIView {
         
         if self !== object {
             active = false
-            if getProgressValue() == 0 && status != .tempReset {
-                status = .initial
+            
+            if status != .tempReset {
+                if getProgressValue() == 0 {
+                    status = .initial
+                } else {
+                    status = .editingOthers
+                }
             }
         }
     }
@@ -123,7 +128,7 @@ class ProcessIndicatorView: UIView {
     @objc func handleTap() {
         if active {
             if status == .tempReset {
-                status = .editing
+                status = .editingSelf
                 delegate?.didRemoveTempReset(self)
             } else {
                 status = .tempReset
@@ -136,24 +141,20 @@ class ProcessIndicatorView: UIView {
             if status == .tempReset {
                 delegate?.didTempReset(self)
             }
+            
+            status = .editingSelf
         }
         
         NotificationCenter.default.post(name: .ProgressIndicatorActivated, object: self)
     }
         
     fileprivate func createIcon() {
-//        let iconLayerLength = frame.width / 2
-//
-//        iconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
         iconLayer.contentsGravity = .resizeAspect
         layer.addSublayer(iconLayer)
     }
     
     fileprivate func createCircularPath() {
         backgroundColor = UIColor.clear
-//        layer.cornerRadius = self.frame.size.width/2
-//
-//        trackLayer.path = circlePath.cgPath
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.strokeColor = trackColor.cgColor
         trackLayer.lineWidth = 2.0
@@ -186,13 +187,12 @@ class ProcessIndicatorView: UIView {
         progressNumberLayer.fontSize = 16
         
         progressNumberLayer.alignmentMode = .center
-//        progressNumberLayer.frame = CGRect(x: self.layer.bounds.origin.x, y: ((self.layer.bounds.height - progressNumberLayer.fontSize) / 2), width: self.layer.bounds.width, height: self.layer.bounds.height)
         
         layer.addSublayer(progressNumberLayer)
     }
     
     private func setProgress(_ progress: Float) {
-        status = .editing
+        status = .editingSelf
         
         if progress > 0 {
             progressLayer.isHidden = false
@@ -237,9 +237,18 @@ class ProcessIndicatorView: UIView {
         case .tempReset:
             iconLayer.contents = dimmedIconImage
             trackLayer.strokeColor = UIColor.gray.cgColor
-        case .editing:
+        case .editingSelf:
+            iconLayer.contents = normalIconImage
+            trackLayer.strokeColor = UIColor.white.cgColor
             iconLayer.isHidden = true
             progressNumberLayer.isHidden = false
+            progressLayer.isHidden = false
+            minusProgressLayer.isHidden = false
+        case .editingOthers:
+            iconLayer.contents = normalIconImage
+            trackLayer.strokeColor = UIColor.white.cgColor
+            iconLayer.isHidden = false
+            progressNumberLayer.isHidden = true
             progressLayer.isHidden = false
             minusProgressLayer.isHidden = false
         }
@@ -254,5 +263,6 @@ extension Notification.Name {
 enum IndicatorStatus {
     case initial
     case tempReset
-    case editing
+    case editingSelf
+    case editingOthers
 }

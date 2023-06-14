@@ -166,7 +166,7 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
         setActiveIndicatorIndex(targetIndex)
         
         guard let processIndicatorView = getActiveIndicator() else { return }
-        if processIndicatorView.status == .editing {
+        if processIndicatorView.status == .editingSelf {
             self.didActive(processIndicatorView.progress)
         }
     }
