@@ -9,11 +9,11 @@
 import UIKit
 
 public struct ProcessIndicatorModel {
-    var normalIconImage: CGImage?
-    var dimmedIconImage: CGImage?
-    var sliderValueRangeType: SliderValueRangeType!
+    var normalIconImage: CGImage
+    var dimmedIconImage: CGImage
+    var sliderValueRangeType: SliderValueRangeType
     
-    public init(sliderValueRangeType: SliderValueRangeType, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
+    public init(sliderValueRangeType: SliderValueRangeType, normalIconImage: CGImage, dimmedIconImage: CGImage) {
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
         self.sliderValueRangeType = sliderValueRangeType
