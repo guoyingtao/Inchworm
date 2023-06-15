@@ -13,7 +13,7 @@ public protocol SliderDelegate {
 }
 
 public class Slider: UIView {
-
+    
     public var delegate: SliderDelegate?
     
     var indicatorContainer: ProcessIndicatorContainer!
@@ -23,7 +23,7 @@ public class Slider: UIView {
      
      - When orientation is horizontal, indicatorContainer is on the top, sliderRuler is on the bottom.
      - When orientation is vertical, indicatorContainer is on the left, sliderRuler is on the right.
-    */
+     */
     var baseContainer = UIView()
     
     var config: Config!
@@ -34,12 +34,24 @@ public class Slider: UIView {
     var containerVerticalWidthConstraint: NSLayoutConstraint!
     var containerVerticalHeightConstraint: NSLayoutConstraint!
     
-    init(config: Config = Config(), frame: CGRect) {
+    init(config: Config = Config(),
+         frame: CGRect,
+         processIndicatorModels: [ProcessIndicatorModel],
+         activeIndex: Int) {
         super.init(frame: frame)
         
         self.config = config
-                                
+        
         createIndicatorContainer()
+        
+        processIndicatorModels.forEach {
+            addIndicatorWith(limitNumber: $0.limitNumber,
+                             sliderValueRangeType: $0.sliderValueRangeType,
+                             normalIconImage: $0.normalIconImage,
+                             dimmedIconImage: $0.dimmedIconImage)
+        }
+        
+        setActiveIndicatorIndex(activeIndex)
         createSlideRuler()
         
         baseContainer.frame = bounds
@@ -76,12 +88,15 @@ public class Slider: UIView {
     }
     
     func createSlideRuler() {
-        let sliderFrame = CGRect(x: 0, y: baseContainer.frame.height / 2, width: baseContainer.frame.width, height: baseContainer.frame.height - config.slideRulerSpan)        
-        slideRuler = SlideRuler(frame: sliderFrame, sliderValueRangeType: config.sliderValueRangeType)
+        let sliderFrame = CGRect(x: 0, y: baseContainer.frame.height / 2, width: baseContainer.frame.width, height: baseContainer.frame.height - config.slideRulerSpan)
+        let activeIndex = indicatorContainer.activeIndicatorIndex
+        let indicator = indicatorContainer.progressIndicatorViewList[activeIndex]
+        
+        slideRuler = SlideRuler(frame: sliderFrame, sliderValueRangeType: indicator.sliderValueRangeType)
         slideRuler.delegate = self
         slideRuler.forceAlignCenterFeedback = config.forceAlignCenterFeedback
     }
-        
+    
     func initialAutolayoutConstraint() {
         baseContainer.translatesAutoresizingMaskIntoConstraints = false
         indicatorContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +111,7 @@ public class Slider: UIView {
         NSLayoutConstraint.activate([
             baseContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
             baseContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
-                        
+            
             indicatorContainer.leadingAnchor.constraint(equalTo: baseContainer.leadingAnchor),
             indicatorContainer.trailingAnchor.constraint(equalTo: baseContainer.trailingAnchor),
             indicatorContainer.topAnchor.constraint(equalTo: baseContainer.topAnchor),
@@ -121,25 +136,31 @@ public class Slider: UIView {
                 containerHorizontalWidthConstraint,
                 containerHoritontalHeightConstraint
             ])
-
+            
             baseContainer.transform = .identity
         } else {
             NSLayoutConstraint.deactivate([
                 containerHorizontalWidthConstraint,
                 containerHoritontalHeightConstraint
             ])
-
+            
             NSLayoutConstraint.activate([
                 containerVerticalWidthConstraint,
                 containerVerticalHeightConstraint
             ])
-                        
+            
             baseContainer.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
         }
     }
     
-    func addIndicatorWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
-        indicatorContainer.addIndicatorWith(limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
+    func addIndicatorWith(limitNumber: Int,
+                          sliderValueRangeType: SliderValueRangeType,
+                          normalIconImage: CGImage?,
+                          dimmedIconImage: CGImage?) {
+        indicatorContainer.addIndicatorWith(limitNumber: limitNumber,
+                                            sliderValueRangeType: sliderValueRangeType,
+                                            normalIconImage: normalIconImage,
+                                            dimmedIconImage: dimmedIconImage)
     }
     
     func setActiveIndicatorIndex(_ index: Int = 0) {
@@ -147,9 +168,12 @@ public class Slider: UIView {
     }
     
     func setSlideRulerBy(progress: Float) {
-        slideRuler.handleRemoveTempResetWith(progress: progress)
-        
         let activeIndex = indicatorContainer.activeIndicatorIndex
+        let indicator = indicatorContainer.progressIndicatorViewList[activeIndex]
+        slideRuler.setPositionProvider(by: indicator.sliderValueRangeType)
+        slideRuler.setUIFrames()
+        slideRuler.handleRemoveTempResetWith(progress: progress)
+
         delegate?.didGetOffsetRatio(self, activeIndicatorIndex: activeIndex, offsetRatio: progress)
     }
 }

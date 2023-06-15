@@ -12,11 +12,21 @@ public struct ProcessIndicatorModel {
     var limitNumber = 0
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
+    var sliderValueRangeType: SliderValueRangeType = .bilateral
     
-    public init(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
-        self.limitNumber = limitNumber
+    public init(valueRange: ClosedRange<Int>, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
+        guard abs(valueRange.lowerBound) == abs(valueRange.upperBound) || valueRange.lowerBound == 0 else {
+            fatalError("InchWorm only supports ranges like [0, 100] or [-100, 100]")
+        }
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
+        self.limitNumber = valueRange.upperBound
+        
+        if abs(valueRange.lowerBound) == abs(valueRange.upperBound) {
+            sliderValueRangeType = .bilateral
+        } else {
+            sliderValueRangeType = .unilateral
+        }
     }
 }
 
@@ -27,15 +37,10 @@ public func createSlider(config: Config = Config(),
                          frame: CGRect,
                          processIndicatorModels: [ProcessIndicatorModel],
                          activeIndex: Int) -> Slider {
-    let board: Slider = Slider(config: config, frame: frame)
-    
-    processIndicatorModels.forEach {
-        board.addIndicatorWith(limitNumber: $0.limitNumber, normalIconImage: $0.normalIconImage, dimmedIconImage: $0.dimmedIconImage)
-    }
-    
-    board.setActiveIndicatorIndex(activeIndex)
-    
-    return board
+    return Slider(config: config,
+                  frame: frame,
+                  processIndicatorModels: processIndicatorModels,
+                  activeIndex: activeIndex)
 }
 
 public struct Config {
@@ -44,11 +49,8 @@ public struct Config {
     public var slideRulerSpan: CGFloat = 50
     public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
     public var forceAlignCenterFeedback = true
-    public var sliderValueRangeType: SliderValueRangeType = .bilateral
     
-    public init() {
-        
-    }
+    public init() {}
 }
 
 public enum SliderOrientation: Int {

@@ -15,29 +15,12 @@ class ViewController: UIViewController {
         
         view.backgroundColor = .black
         
-        createHorizontalBilateralTypeSlider()
-        createHorizontalUnilateralTypeSlider()        
-        createVerticalBilateralTypeSlider()
+        createHorizontalSlider()
+        createVerticalSlider()
     }
     
-    func createHorizontalBilateralTypeSlider() {
-        var config = Config()
-        config.sliderValueRangeType = .bilateral
-        let slider = createSlider(with: config)
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            slider.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
-            slider.heightAnchor.constraint(equalToConstant: 120),
-            slider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150)
-        ])
-    }
-    
-    func createHorizontalUnilateralTypeSlider() {
-        var config = Config()
-        config.sliderValueRangeType = .unilateral
-        
+    func createHorizontalSlider() {
+        let config = Config()
         let slider = createSlider(with: config)
         slider.translatesAutoresizingMaskIntoConstraints = false
         
@@ -48,8 +31,8 @@ class ViewController: UIViewController {
             slider.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
-    func createVerticalBilateralTypeSlider() {
+        
+    func createVerticalSlider() {
         var config = Config()
         config.orientation = .vertical
         let slider = createSlider(with: config)
@@ -65,15 +48,15 @@ class ViewController: UIViewController {
     }
 
     func createSlider(with config: Config) -> UIView {
-        let model1 = ProcessIndicatorModel(limitNumber: 30,
+        let model1 = ProcessIndicatorModel(valueRange: 0...30,
                                            normalIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.gray)!.cgImage!)
 
-        let model2 = ProcessIndicatorModel(limitNumber: 40,
+        let model2 = ProcessIndicatorModel(valueRange: -40...40,
                                            normalIconImage: UIImage(named: "settings")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "settings")!.tinted(with: UIColor.gray)!.cgImage!)
 
-        let model3 = ProcessIndicatorModel(limitNumber: 40,
+        let model3 = ProcessIndicatorModel(valueRange: -50...50,
                                            normalIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.gray)!.cgImage!)
 

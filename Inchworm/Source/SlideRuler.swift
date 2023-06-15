@@ -24,7 +24,7 @@ class SlideRuler: UIView {
     let scrollRulerView = UIScrollView()
     let dotWidth: CGFloat = 6
     var sliderOffsetRatio: CGFloat = 0.5
-    var positionInfoProvider: SlideRulerPositionHelper
+    var positionInfoProvider: SlideRulerPositionHelper = BilateralTypeSlideRulerPositionHelper()
     
     let scaleBarLayer: CAReplicatorLayer = {
         var r = CAReplicatorLayer()
@@ -49,15 +49,8 @@ class SlideRuler: UIView {
     }
     
     init(frame: CGRect, sliderValueRangeType: SliderValueRangeType) {
-        switch sliderValueRangeType {
-        case .bilateral:
-            self.positionInfoProvider = BilateralTypeSlideRulerPositionHelper()
-        case .unilateral:
-            self.positionInfoProvider = UnilateralTypeSlideRulerPositionHelper()
-        }
-
         super.init(frame: frame)
-        self.positionInfoProvider.slideRuler = self
+        self.setPositionProvider(by: sliderValueRangeType)        
         setupUI()
     }
     
@@ -65,9 +58,17 @@ class SlideRuler: UIView {
         fatalError()
     }
     
+    func setPositionProvider(by sliderValueRangeType: SliderValueRangeType) {
+        switch sliderValueRangeType {
+        case .bilateral:
+            self.positionInfoProvider = BilateralTypeSlideRulerPositionHelper()
+        case .unilateral:
+            self.positionInfoProvider = UnilateralTypeSlideRulerPositionHelper()
+        }
+        self.positionInfoProvider.slideRuler = self
+    }
+    
     private func setupUI() {
-        sliderOffsetRatio = positionInfoProvider.getInitialOffsetRatio()
-        
         setupSlider()
         makeRuler()
         makeCentralDot()
@@ -81,6 +82,7 @@ class SlideRuler: UIView {
     }
     
     public func setUIFrames() {
+        sliderOffsetRatio = positionInfoProvider.getInitialOffsetRatio()
         scrollRulerView.frame = bounds
 
         offsetValue = sliderOffsetRatio * scrollRulerView.frame.width

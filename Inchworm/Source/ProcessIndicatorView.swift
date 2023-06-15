@@ -25,6 +25,7 @@ class ProcessIndicatorView: UIView {
     let minusTrackColorValue = UIColor(displayP3Red: 84.0 / 255.0, green: 84.0 / 255.0, blue: 84.0 / 255.0, alpha: 1)
     
     var limitNumber = 30
+    var sliderValueRangeType: SliderValueRangeType = .bilateral
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
     var index = 0
@@ -71,10 +72,15 @@ class ProcessIndicatorView: UIView {
         }
     }
     
-    init(frame: CGRect, limitNumber: Int = 30, normalIconImage: CGImage? = nil, dimmedIconImage: CGImage? = nil) {
+    init(frame: CGRect,
+         limitNumber: Int = 30,
+         sliderValueRangeType: SliderValueRangeType = .bilateral,
+         normalIconImage: CGImage? = nil,
+         dimmedIconImage: CGImage? = nil) {
         super.init(frame: frame)
         
         self.limitNumber = limitNumber
+        self.sliderValueRangeType = sliderValueRangeType
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
 

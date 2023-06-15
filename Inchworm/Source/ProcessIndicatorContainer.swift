@@ -74,8 +74,15 @@ class ProcessIndicatorContainer: UIView {
         }
     }
     
-    func addIndicatorWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
-        let indicatorView = ProcessIndicatorView(frame: CGRect(x: 0, y: 0, width: iconLength, height: iconLength), limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
+    func addIndicatorWith(limitNumber: Int,
+                          sliderValueRangeType: SliderValueRangeType,
+                          normalIconImage: CGImage?,
+                          dimmedIconImage: CGImage?) {
+        let indicatorView = ProcessIndicatorView(frame: CGRect(x: 0, y: 0, width: iconLength, height: iconLength),
+                                                 limitNumber: limitNumber,
+                                                 sliderValueRangeType: sliderValueRangeType,
+                                                 normalIconImage: normalIconImage,
+                                                 dimmedIconImage: dimmedIconImage)
         indicatorView.delegate = self
         indicatorView.index = progressIndicatorViewList.count
         
@@ -166,7 +173,7 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
         
         guard let processIndicatorView = getActiveIndicator() else { return }
         if processIndicatorView.status == .editingSelf {
-            self.didActive(processIndicatorView.progress)
+            didActive(processIndicatorView.progress)
         }
     }
 }
@@ -174,14 +181,14 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
 extension ProcessIndicatorContainer: ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
         setActiveIndicatorIndex(processIndicatorView.index, animated: true)        
-        self.didActive(processIndicatorView.progress)
+        didActive(processIndicatorView.progress)
     }
     
     func didTempReset(_ processIndicatorView: ProcessIndicatorView) {
-        self.didTempReset()
+        didTempReset()
     }
     
     func didRemoveTempReset(_ processIndicatorView: ProcessIndicatorView) {
-        self.didRemoveTempReset(processIndicatorView.progress)
+        didRemoveTempReset(processIndicatorView.progress)
     }
 }
