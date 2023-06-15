@@ -9,24 +9,14 @@
 import UIKit
 
 public struct ProcessIndicatorModel {
-    var limitNumber = 0
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
-    var sliderValueRangeType: SliderValueRangeType = .bilateral
+    var sliderValueRangeType: SliderValueRangeType!
     
-    public init(valueRange: ClosedRange<Int>, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
-        guard abs(valueRange.lowerBound) == abs(valueRange.upperBound) || valueRange.lowerBound == 0 else {
-            fatalError("InchWorm only supports ranges like [0, 100] or [-100, 100]")
-        }
+    public init(sliderValueRangeType: SliderValueRangeType, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
-        self.limitNumber = valueRange.upperBound
-        
-        if abs(valueRange.lowerBound) == abs(valueRange.upperBound) {
-            sliderValueRangeType = .bilateral
-        } else {
-            sliderValueRangeType = .unilateral
-        }
+        self.sliderValueRangeType = sliderValueRangeType
     }
 }
 
@@ -53,12 +43,12 @@ public struct Config {
     public init() {}
 }
 
-public enum SliderOrientation: Int {
+public enum SliderOrientation {
     case horizontal
     case vertical
 }
 
 public enum SliderValueRangeType {
-    case bilateral
-    case unilateral
+    case bilateral(limit: Int)
+    case unilateral(limit: Int)
 }

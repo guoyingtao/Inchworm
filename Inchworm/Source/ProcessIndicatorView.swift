@@ -24,8 +24,7 @@ class ProcessIndicatorView: UIView {
     let trackColorVlue = UIColor(displayP3Red: 55.0 / 255.0, green: 45.0 / 255.0, blue: 9.0 / 255.0, alpha: 1)
     let minusTrackColorValue = UIColor(displayP3Red: 84.0 / 255.0, green: 84.0 / 255.0, blue: 84.0 / 255.0, alpha: 1)
     
-    var limitNumber = 30
-    var sliderValueRangeType: SliderValueRangeType = .bilateral
+    var sliderValueRangeType: SliderValueRangeType!
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
     var index = 0
@@ -73,13 +72,11 @@ class ProcessIndicatorView: UIView {
     }
     
     init(frame: CGRect,
-         limitNumber: Int = 30,
-         sliderValueRangeType: SliderValueRangeType = .bilateral,
+         sliderValueRangeType: SliderValueRangeType,
          normalIconImage: CGImage? = nil,
          dimmedIconImage: CGImage? = nil) {
         super.init(frame: frame)
         
-        self.limitNumber = limitNumber
         self.sliderValueRangeType = sliderValueRangeType
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
@@ -228,7 +225,14 @@ class ProcessIndicatorView: UIView {
     }
     
     func getProgressValue() -> Int {
-        Int(progress * Float(limitNumber))
+        switch sliderValueRangeType {
+        case .bilateral(let limit):
+            return Int(progress * Float(limit))
+        case .unilateral(let limit):
+            return Int(progress * Float(limit))
+        case .none:
+            return 0
+        }
     }
     
     func change(to status: IndicatorStatus) {

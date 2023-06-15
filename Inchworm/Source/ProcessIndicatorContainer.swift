@@ -74,12 +74,11 @@ class ProcessIndicatorContainer: UIView {
         }
     }
     
-    func addIndicatorWith(limitNumber: Int,
-                          sliderValueRangeType: SliderValueRangeType,
+    func addIndicatorWith(sliderValueRangeType: SliderValueRangeType,
                           normalIconImage: CGImage?,
                           dimmedIconImage: CGImage?) {
-        let indicatorView = ProcessIndicatorView(frame: CGRect(x: 0, y: 0, width: iconLength, height: iconLength),
-                                                 limitNumber: limitNumber,
+        let indicatorFrame = CGRect(x: 0, y: 0, width: iconLength, height: iconLength)
+        let indicatorView = ProcessIndicatorView(frame: indicatorFrame,
                                                  sliderValueRangeType: sliderValueRangeType,
                                                  normalIconImage: normalIconImage,
                                                  dimmedIconImage: dimmedIconImage)

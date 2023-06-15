@@ -45,8 +45,7 @@ public class Slider: UIView {
         createIndicatorContainer()
         
         processIndicatorModels.forEach {
-            addIndicatorWith(limitNumber: $0.limitNumber,
-                             sliderValueRangeType: $0.sliderValueRangeType,
+            addIndicatorWith(sliderValueRangeType: $0.sliderValueRangeType,
                              normalIconImage: $0.normalIconImage,
                              dimmedIconImage: $0.dimmedIconImage)
         }
@@ -153,12 +152,10 @@ public class Slider: UIView {
         }
     }
     
-    func addIndicatorWith(limitNumber: Int,
-                          sliderValueRangeType: SliderValueRangeType,
+    func addIndicatorWith(sliderValueRangeType: SliderValueRangeType,
                           normalIconImage: CGImage?,
                           dimmedIconImage: CGImage?) {
-        indicatorContainer.addIndicatorWith(limitNumber: limitNumber,
-                                            sliderValueRangeType: sliderValueRangeType,
+        indicatorContainer.addIndicatorWith(sliderValueRangeType: sliderValueRangeType,
                                             normalIconImage: normalIconImage,
                                             dimmedIconImage: dimmedIconImage)
     }
