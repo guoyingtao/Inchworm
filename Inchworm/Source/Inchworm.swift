@@ -24,11 +24,11 @@ public struct ProcessIndicatorModel {
  You can set frame to CGRecte.zero if Autolayout is used
  */
 public func createSlider(config: Config = Config(),
-                            frame: CGRect,
-                            processIndicatorModels: [ProcessIndicatorModel],
-                            activeIndex: Int) -> Slider {
+                         frame: CGRect,
+                         processIndicatorModels: [ProcessIndicatorModel],
+                         activeIndex: Int) -> Slider {
     let board: Slider = Slider(config: config, frame: frame)
-                    
+    
     processIndicatorModels.forEach {
         board.addIndicatorWith(limitNumber: $0.limitNumber, normalIconImage: $0.normalIconImage, dimmedIconImage: $0.dimmedIconImage)
     }
@@ -39,7 +39,7 @@ public func createSlider(config: Config = Config(),
 }
 
 public struct Config {
-    public var orientation: SliderOrientation = .horizontal    
+    public var orientation: SliderOrientation = .horizontal
     public var indicatorSpan: CGFloat = 50
     public var slideRulerSpan: CGFloat = 50
     public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
