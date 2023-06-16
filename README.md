@@ -14,6 +14,8 @@ A slider for adjusting values just like the one in Photo.app in iOS 13
 
 <p align="center">
     <img src="Images/demo.png" height="380" alt="Inchworm" />
+    <img src="Images/demo-bilateral.png" height="380" alt="Inchworm" />
+    <img src="Images/demo-unilateral.png" height="380" alt="Inchworm" />
 </p>
 
 ## Requirements
