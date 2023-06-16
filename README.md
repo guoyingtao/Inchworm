@@ -60,4 +60,4 @@ func didGetOffsetRatio(_ slider: Inchworm.Slider, activeIndicatorIndex: Int, off
 }
 ```
 
-<div>Icon used here is from <a href="https://www.flickr.com/photos/andreaskay/47331947062" title="Flickr">Flickr</a>. by Andreas Kay, is licensed by <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/" title="Attribution-NonCommercial-ShareAlike 2.0 Generic" target="_blank">CC BY-NC-SA 2.0</a></div>
+<div><a href="https://www.flaticon.com/free-icons/worm" title="worm icons">Worm icons created by Freepik - Flaticon</a></div>
