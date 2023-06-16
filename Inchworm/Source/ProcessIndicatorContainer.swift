@@ -9,7 +9,6 @@
 import UIKit
 
 class ProcessIndicatorContainer: UIView {
-
     var progressIndicatorViewList: [ProcessIndicatorView] = []
     var backgroundSlideView = UIScrollView()
     var activeIndicatorIndex = 0
@@ -37,10 +36,7 @@ class ProcessIndicatorContainer: UIView {
         backgroundSlideView.showsHorizontalScrollIndicator = false
         backgroundSlideView.delegate = self
         addSubview(backgroundSlideView)
-        
-        // iF you want a customized page width, comment this one
-        // backgroundSlideView.isPagingEnabled = true
-        
+                
         setupUIFrames()
     }
     
@@ -78,8 +74,14 @@ class ProcessIndicatorContainer: UIView {
         }
     }
     
-    func addIndicatorWith(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
-        let indicatorView = ProcessIndicatorView(frame: CGRect(x: 0, y: 0, width: iconLength, height: iconLength), limitNumber: limitNumber, normalIconImage: normalIconImage, dimmedIconImage: dimmedIconImage)
+    func addIndicatorWith(sliderValueRangeType: SliderValueRangeType,
+                          normalIconImage: CGImage?,
+                          dimmedIconImage: CGImage?) {
+        let indicatorFrame = CGRect(x: 0, y: 0, width: iconLength, height: iconLength)
+        let indicatorView = ProcessIndicatorView(frame: indicatorFrame,
+                                                 sliderValueRangeType: sliderValueRangeType,
+                                                 normalIconImage: normalIconImage,
+                                                 dimmedIconImage: dimmedIconImage)
         indicatorView.delegate = self
         indicatorView.index = progressIndicatorViewList.count
         
@@ -169,8 +171,8 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
         setActiveIndicatorIndex(targetIndex)
         
         guard let processIndicatorView = getActiveIndicator() else { return }
-        if processIndicatorView.status == .editing {
-            self.didActive(processIndicatorView.progress)
+        if processIndicatorView.status == .editingSelf {
+            didActive(processIndicatorView.progress)
         }
     }
 }
@@ -178,14 +180,14 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
 extension ProcessIndicatorContainer: ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
         setActiveIndicatorIndex(processIndicatorView.index, animated: true)        
-        self.didActive(processIndicatorView.progress)
+        didActive(processIndicatorView.progress)
     }
     
     func didTempReset(_ processIndicatorView: ProcessIndicatorView) {
-        self.didTempReset()
+        didTempReset()
     }
     
     func didRemoveTempReset(_ processIndicatorView: ProcessIndicatorView) {
-        self.didRemoveTempReset(processIndicatorView.progress)
+        didRemoveTempReset(processIndicatorView.progress)
     }
 }

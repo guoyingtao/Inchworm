@@ -9,48 +9,46 @@
 import UIKit
 
 public struct ProcessIndicatorModel {
-    var limitNumber = 0
-    var normalIconImage: CGImage?
-    var dimmedIconImage: CGImage?
+    var normalIconImage: CGImage
+    var dimmedIconImage: CGImage
+    var sliderValueRangeType: SliderValueRangeType
     
-    public init(limitNumber: Int, normalIconImage: CGImage?, dimmedIconImage: CGImage?) {
-        self.limitNumber = limitNumber
+    public init(sliderValueRangeType: SliderValueRangeType, normalIconImage: CGImage, dimmedIconImage: CGImage) {
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
+        self.sliderValueRangeType = sliderValueRangeType
     }
 }
 
-// You can set frame to CGRecte.zero if you are using Autolayout
+/**
+ You can set frame to CGRecte.zero if Autolayout is used
+ */
 public func createSlider(config: Config = Config(),
-                            frame: CGRect,
-                            processIndicatorModels: [ProcessIndicatorModel],
-                            activeIndex: Int) -> Slider {
-    let board: Slider = Slider(config: config, frame: frame)
-                    
-    processIndicatorModels.forEach {
-        board.addIndicatorWith(limitNumber: $0.limitNumber, normalIconImage: $0.normalIconImage, dimmedIconImage: $0.dimmedIconImage)
-    }
-    
-    board.setActiveIndicatorIndex(activeIndex)
-    
-    return board
+                         frame: CGRect,
+                         processIndicatorModels: [ProcessIndicatorModel],
+                         activeIndex: Int) -> Slider {
+    return Slider(config: config,
+                  frame: frame,
+                  processIndicatorModels: processIndicatorModels,
+                  activeIndex: activeIndex)
 }
 
-@objc public class Config: NSObject {
-    // You can change the orientation about passing config to a Slider
-    @objc public dynamic var orientation: SliderOrientation = .horizontal
-    
+public struct Config {
+    public var orientation: SliderOrientation = .horizontal
     public var indicatorSpan: CGFloat = 50
     public var slideRulerSpan: CGFloat = 50
     public var spaceBetweenIndicatorAndSlideRule: CGFloat = 10
     public var forceAlignCenterFeedback = true
     
-    public override init() {
-        
-    }
+    public init() {}
 }
 
-@objc public enum SliderOrientation: Int {
+public enum SliderOrientation {
     case horizontal
     case vertical
+}
+
+public enum SliderValueRangeType {
+    case bilateral(limit: Int)
+    case unilateral(limit: Int)
 }

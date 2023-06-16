@@ -12,7 +12,6 @@ fileprivate let scaleBarNumber = 41
 fileprivate let majorScaleBarNumber = 5
 fileprivate let scaleWidth: CGFloat = 1
 fileprivate let pointerWidth: CGFloat = 1
-fileprivate let dotWidth: CGFloat = 6
 
 protocol SlideRulerDelegate {
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat)
@@ -22,8 +21,10 @@ class SlideRuler: UIView {
     var forceAlignCenterFeedback = true
     let pointer = CALayer()
     let centralDot = CAShapeLayer()
-    let slider = UIScrollView()
+    let scrollRulerView = UIScrollView()
+    let dotWidth: CGFloat = 6
     var sliderOffsetRatio: CGFloat = 0.5
+    var positionInfoProvider: SlideRulerPositionHelper = BilateralTypeSlideRulerPositionHelper()
     
     let scaleBarLayer: CAReplicatorLayer = {
         var r = CAReplicatorLayer()
@@ -47,14 +48,24 @@ class SlideRuler: UIView {
         }
     }
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, sliderValueRangeType: SliderValueRangeType) {
         super.init(frame: frame)
+        self.setPositionProvider(by: sliderValueRangeType)        
         setupUI()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
+        fatalError()
+    }
+    
+    func setPositionProvider(by sliderValueRangeType: SliderValueRangeType) {
+        switch sliderValueRangeType {
+        case .bilateral:
+            self.positionInfoProvider = BilateralTypeSlideRulerPositionHelper()
+        case .unilateral:
+            self.positionInfoProvider = UnilateralTypeSlideRulerPositionHelper()
+        }
+        self.positionInfoProvider.slideRuler = self
     }
     
     private func setupUI() {
@@ -67,23 +78,26 @@ class SlideRuler: UIView {
     }
     
     @objc func setSliderDelegate() {
-        slider.delegate = self
+        scrollRulerView.delegate = self
     }
     
     public func setUIFrames() {
-        slider.frame = bounds
+        sliderOffsetRatio = positionInfoProvider.getInitialOffsetRatio()
+        scrollRulerView.frame = bounds
 
-        offsetValue = sliderOffsetRatio * slider.frame.width
-        slider.delegate = nil
-        slider.contentSize = CGSize(width: frame.width * 2, height: frame.height)
-        slider.contentOffset = CGPoint(x: offsetValue, y: 0)
+        offsetValue = sliderOffsetRatio * scrollRulerView.frame.width
+        scrollRulerView.delegate = nil
+        scrollRulerView.contentSize = CGSize(width: frame.width * 2, height: frame.height)
+        scrollRulerView.contentOffset = CGPoint(x: offsetValue, y: 0)
         
         perform(#selector(setSliderDelegate), with: nil, afterDelay: 0.1)
         // slider.delegate = self
 
         pointer.frame = CGRect(x: (frame.width / 2 - pointerWidth / 2), y: bounds.origin.y, width: pointerWidth, height: frame.height)
         
-        centralDot.frame = CGRect(x: frame.width - dotWidth / 2, y: frame.height * 0.2, width: dotWidth, height: dotWidth)
+        let centralDotOriginX = positionInfoProvider.getCentralDotOriginX()
+        centralDot.frame = CGRect(x: centralDotOriginX, y: frame.height * 0.2, width: dotWidth, height: dotWidth)
+        
         centralDot.path = UIBezierPath(ovalIn: centralDot.bounds).cgPath
         
         scaleBarLayer.frame = CGRect(x: frame.width / 2, y: 0.6 * frame.height, width: frame.width, height: 0.4 * frame.height)
@@ -102,11 +116,11 @@ class SlideRuler: UIView {
     }
     
     private func setupSlider() {
-        addSubview(slider)
+        addSubview(scrollRulerView)
         
-        slider.showsHorizontalScrollIndicator = false
-        slider.showsVerticalScrollIndicator = false
-        slider.delegate = self
+        scrollRulerView.showsHorizontalScrollIndicator = false
+        scrollRulerView.showsVerticalScrollIndicator = false
+        scrollRulerView.delegate = self
     }
     
     private func makePointer() {
@@ -116,7 +130,7 @@ class SlideRuler: UIView {
     
     private func makeCentralDot() {
         centralDot.fillColor = UIColor.white.cgColor
-        slider.layer.addSublayer(centralDot)
+        scrollRulerView.layer.addSublayer(centralDot)
     }
     
     private func makeRuler() {
@@ -125,14 +139,14 @@ class SlideRuler: UIView {
         let scaleBar = makeBarScaleMark(byColor: UIColor.gray.cgColor)
         scaleBarLayer.addSublayer(scaleBar)
         
-        slider.layer.addSublayer(scaleBarLayer)
+        scrollRulerView.layer.addSublayer(scaleBarLayer)
         
         majorScaleBarLayer.sublayers?.forEach { $0.removeFromSuperlayer() }
 
         let majorScaleBar = makeBarScaleMark(byColor: UIColor.white.cgColor)
         majorScaleBarLayer.addSublayer(majorScaleBar)
         
-        slider.layer.addSublayer(majorScaleBarLayer)
+        scrollRulerView.layer.addSublayer(majorScaleBarLayer)
     }
     
     private func makeBarScaleMark(byColor color: CGColor) -> CALayer {
@@ -144,9 +158,9 @@ class SlideRuler: UIView {
     
     func handleTempReset() {
         let offset = CGPoint(x: offsetValue, y: 0)
-        slider.delegate = nil
-        slider.setContentOffset(offset, animated: false)
-        slider.delegate = self
+        scrollRulerView.delegate = nil
+        scrollRulerView.setContentOffset(offset, animated: false)
+        scrollRulerView.delegate = self
         
         centralDot.isHidden = true
         let color = UIColor.gray.cgColor
@@ -159,19 +173,19 @@ class SlideRuler: UIView {
         
         scaleBarLayer.sublayers?.forEach { $0.backgroundColor = UIColor.gray.cgColor}
         majorScaleBarLayer.sublayers?.forEach { $0.backgroundColor = UIColor.white.cgColor}
-
         
-        slider.delegate = nil
-        let offsetX = CGFloat(progress) * offsetValue + offsetValue
+        scrollRulerView.delegate = nil
+        
+        let offsetX = positionInfoProvider.getRulerOffsetX(with: CGFloat(progress))
         let offset = CGPoint(x: offsetX, y: 0)
-        slider.setContentOffset(offset, animated: false)
-        slider.delegate = self
+        scrollRulerView.setContentOffset(offset, animated: false)
+        scrollRulerView.delegate = self
         
         checkCentralDotHiddenStatus()
     }
     
     func checkCentralDotHiddenStatus() {
-        centralDot.isHidden = (slider.contentOffset.x == frame.width / 2)
+        centralDot.isHidden = (scrollRulerView.contentOffset.x == frame.width / 2)
     }
 }
 
@@ -187,7 +201,12 @@ extension SlideRuler: UIScrollViewDelegate {
         let speed = scrollView.panGestureRecognizer.velocity(in: scrollView.superview)
         
         let limit = frame.width / CGFloat((scaleBarNumber - 1) * 2)
-        if abs(slider.contentOffset.x - frame.width / 2) < limit && abs(speed.x) < 10.0 {
+        
+        func checkIsCenterPosition() -> Bool {
+            return positionInfoProvider.checkIsCenterPosition(with: limit)
+        }        
+        
+        if checkIsCenterPosition() && abs(speed.x) < 10.0 {
             
             if !reset {
                 reset = true
@@ -198,7 +217,7 @@ extension SlideRuler: UIScrollViewDelegate {
                 }
                 
                 func forceAlignCenter() {
-                    let offset = CGPoint(x: frame.width / 2, y: 0)
+                    let offset = CGPoint(x: positionInfoProvider.getForceAlignCenterX(), y: 0)
                     scrollView.setContentOffset(offset, animated: false)
                     delegate?.didGetOffsetRatio(from: self, offsetRatio: 0)
                 }
@@ -216,15 +235,9 @@ extension SlideRuler: UIScrollViewDelegate {
             reset = false
         }
         
-        var offsetRatio = (slider.contentOffset.x - offsetValue) / offsetValue
-        
-        if offsetRatio > 1 { offsetRatio = 1.0 }
-        if offsetRatio < -1 { offsetRatio = -1.0 }
-        
+        let offsetRatio = positionInfoProvider.getOffsetRatio()
         delegate?.didGetOffsetRatio(from: self, offsetRatio: offsetRatio)
         
-        if scrollView.frame.width > 0 {
-            sliderOffsetRatio = scrollView.contentOffset.x / scrollView.frame.width
-        }
+        positionInfoProvider.handleOffsetRatioWhenScrolling(scrollView)
     }
 }
