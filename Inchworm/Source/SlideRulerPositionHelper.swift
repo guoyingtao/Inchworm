@@ -5,7 +5,7 @@
 //  Created by Yingtao Guo on 6/14/23.
 //
 
-import Foundation
+import UIKit
 
 protocol SlideRulerPositionHelper {
     var slideRuler: SlideRuler! { get set }

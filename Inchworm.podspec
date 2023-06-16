@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "Inchworm"
-  s.version      = "0.1"
+  s.version      = "1.0.0"
   s.summary      = "A swift slider-style value adjusting tool"
 
   s.description  = <<-DESC
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.swift_version = "5.0"
   s.ios.deployment_target = "11.0"
-  s.source       = { :git => "https://github.com/guoyingtao/Inchworm.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/guoyingtao/Inchworm.git", :tag => "v#{s.version}" }
   s.source_files  = "Inchworm/**/*.{h,swift}"
   #s.exclude_files = "Inchworm/**/Info.plist"
   

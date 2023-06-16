@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="logo.jpg" height="120" max-width="90%" alt="Inchworm" />
+    <img src="Images/logo.png" height="120" max-width="90%" alt="Inchworm" />
 </p>
 
 <p align="center">
@@ -13,10 +13,7 @@
 A slider for adjusting values just like the one in Photo.app in iOS 13
 
 <p align="center">
-    <img src="Images/horizontal1.png" height="380" alt="Inchworm" />
-    <img src="Images/horizontal2.png" height="380" alt="Inchworm" />
-    <img src="Images/horizontal3.png" height="380" alt="Inchworm" />
-    <img src="Images/vertical.png" height="380" alt="Inchworm" />
+    <img src="Images/demo.png" height="380" alt="Inchworm" />
 </p>
 
 ## Requirements
@@ -26,7 +23,7 @@ A slider for adjusting values just like the one in Photo.app in iOS 13
 ### CocoaPods
 
 ```ruby
-pod 'Inchworm', '~> 0.1'
+pod 'Inchworm', '~> 1.0.0'
 ```
 
 ## Usage
@@ -34,15 +31,15 @@ pod 'Inchworm', '~> 0.1'
 * Create a Slider
 
 ``` swift
-let model1 = ProcessIndicatorModel(limitNumber: 30,
+let model1 = ProcessIndicatorModel(sliderValueRangeType: .unilateral(limit: 30),
                                    normalIconImage: <NormalIconImage1>,
                                    dimmedIconImage: <DimmedIconImage1>)
 
-let model2 = ProcessIndicatorModel(limitNumber: 40,
+let model2 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 40),
                                    normalIconImage: <NormalIconImage2>,
                                    dimmedIconImage: <DimmedIconImage2>)
 
-let model3 = ProcessIndicatorModel(limitNumber: 20,
+let model3 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 50),
                                    normalIconImage: <NormalIconImage3>,
                                    dimmedIconImage: <DimmedIconImage3>)
 

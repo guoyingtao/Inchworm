@@ -21,8 +21,15 @@ class ProcessIndicatorView: UIView {
     private var progressNumberLayer = CATextLayer()
     private var iconLayer = CALayer()
     
-    let trackColorVlue = UIColor(displayP3Red: 55.0 / 255.0, green: 45.0 / 255.0, blue: 9.0 / 255.0, alpha: 1)
-    let minusTrackColorValue = UIColor(displayP3Red: 84.0 / 255.0, green: 84.0 / 255.0, blue: 84.0 / 255.0, alpha: 1)
+    let trackColorVlue = UIColor(displayP3Red: 55.0 / 255.0,
+                                 green: 45.0 / 255.0,
+                                 blue: 9.0 / 255.0,
+                                 alpha: 1)
+    
+    let minusTrackColorValue = UIColor(displayP3Red: 84.0 / 255.0,
+                                       green: 84.0 / 255.0,
+                                       blue: 84.0 / 255.0,
+                                       alpha: 1)
     
     var sliderValueRangeType: SliderValueRangeType!
     var normalIconImage: CGImage?
@@ -227,7 +234,7 @@ class ProcessIndicatorView: UIView {
     func getProgressValue() -> Int {
         switch sliderValueRangeType {
         case .bilateral(let limit):
-            return Int(progress * Float(limit))
+            fallthrough
         case .unilateral(let limit):
             return Int(progress * Float(limit))
         case .none:

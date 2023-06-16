@@ -8,13 +8,12 @@
 
 import UIKit
 
-public protocol SliderDelegate {
+public protocol SliderDelegate: AnyObject {
     func didGetOffsetRatio(_ slider: Slider, activeIndicatorIndex: Int, offsetRatio: Float)
 }
 
-public class Slider: UIView {
-    
-    public var delegate: SliderDelegate?
+public class Slider: UIView {    
+    public weak var delegate: SliderDelegate?
     
     var indicatorContainer: ProcessIndicatorContainer!
     var slideRuler: SlideRuler!

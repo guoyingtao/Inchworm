@@ -8,12 +8,12 @@
 
 import UIKit
 
-fileprivate let scaleBarNumber = 41
-fileprivate let majorScaleBarNumber = 5
-fileprivate let scaleWidth: CGFloat = 1
-fileprivate let pointerWidth: CGFloat = 1
+private let scaleBarNumber = 41
+private let majorScaleBarNumber = 5
+private let scaleWidth: CGFloat = 1
+private let pointerWidth: CGFloat = 1
 
-protocol SlideRulerDelegate {
+protocol SlideRulerDelegate: AnyObject {
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat)
 }
 
@@ -38,7 +38,7 @@ class SlideRuler: UIView {
         return r
     } ()
     
-    var delegate: SlideRulerDelegate?
+    weak var delegate: SlideRulerDelegate?
     var reset = false
     var offsetValue: CGFloat = 0
     
@@ -101,14 +101,14 @@ class SlideRuler: UIView {
         centralDot.path = UIBezierPath(ovalIn: centralDot.bounds).cgPath
         
         scaleBarLayer.frame = CGRect(x: frame.width / 2, y: 0.6 * frame.height, width: frame.width, height: 0.4 * frame.height)
-        scaleBarLayer.instanceTransform = CATransform3DMakeTranslation((frame.width - scaleWidth) / CGFloat((scaleBarNumber - 1)) , 0, 0)
+        scaleBarLayer.instanceTransform = CATransform3DMakeTranslation((frame.width - scaleWidth) / CGFloat((scaleBarNumber - 1)), 0, 0)
 
         scaleBarLayer.sublayers?.forEach {
             $0.frame = CGRect(x: 0, y: 0, width: 1, height: scaleBarLayer.frame.height)
         }
         
         majorScaleBarLayer.frame = scaleBarLayer.frame
-        majorScaleBarLayer.instanceTransform = CATransform3DMakeTranslation((frame.width - scaleWidth) / CGFloat((majorScaleBarNumber - 1)) , 0, 0)
+        majorScaleBarLayer.instanceTransform = CATransform3DMakeTranslation((frame.width - scaleWidth) / CGFloat((majorScaleBarNumber - 1)), 0, 0)
         
         majorScaleBarLayer.sublayers?.forEach {
             $0.frame = CGRect(x: 0, y: 0, width: 1, height: majorScaleBarLayer.frame.height)
