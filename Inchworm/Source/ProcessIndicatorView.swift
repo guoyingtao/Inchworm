@@ -223,9 +223,11 @@ class ProcessIndicatorView: UIView {
     private func setProgress(ratio progressRatio: Float, value progressValue: Int) {
         status = .editingSelf
         
+        progressLayer.strokeEnd = 0
+        
         if progressRatio > 0 {
+            minusProgressLayer.strokeEnd = 0
             progressLayer.isHidden = false
-            minusProgressLayer.isHidden = true
             
             progressLayer.path = circlePath.cgPath
             progressColor = UIColor(displayP3Red: 247.0 / 255.0, green: 198.0 / 255.0, blue: 0, alpha: 1)
@@ -234,7 +236,7 @@ class ProcessIndicatorView: UIView {
             progressLayer.strokeEnd = abs(CGFloat(progressRatio))
             progressNumberLayer.foregroundColor = progressColor.cgColor
         } else {
-            progressLayer.isHidden = true
+            progressLayer.strokeEnd = 0
             minusProgressLayer.isHidden = false
             
             minusProgressColor = .white
