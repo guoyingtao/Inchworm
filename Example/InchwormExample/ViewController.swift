@@ -56,7 +56,7 @@ class ViewController: UIViewController {
                                            normalIconImage: UIImage(named: "settings")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "settings")!.tinted(with: UIColor.gray)!.cgImage!)
 
-        let model3 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 50, defaultValue: -25),
+        let model3 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 50, defaultValue: 0),
                                            normalIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.gray)!.cgImage!)
 

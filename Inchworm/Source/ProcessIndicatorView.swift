@@ -159,12 +159,12 @@ class ProcessIndicatorView: UIView {
     
     @objc func handleTap() {
         if isActive {
-            if status == .tempReset || status == .editingOthers {
-                status = .editingSelf
-                delegate?.didRemoveTempReset(self)
-            } else {
+            if status == .editingSelf {
                 status = .tempReset
                 delegate?.didTempReset(self)
+            } else {
+                status = .editingSelf
+                delegate?.didRemoveTempReset(self)
             }
         } else {
             isActive = true
