@@ -118,7 +118,7 @@ class ProcessIndicatorContainer: UIView {
     
     func setActiveIndicatorIndex(_ index: Int = 0, animated: Bool = false) {
         guard index < progressIndicatorViewList.count else {
-            fatalError("Invalid index found")
+            return
         }
         
         activeIndicatorIndex = index
@@ -127,7 +127,7 @@ class ProcessIndicatorContainer: UIView {
             return
         }
         
-        indicator.active = true
+        indicator.isActive = true
         
         let slideContentSize = getSlideContentSize()
         let currentPositon = indicator.center
@@ -153,7 +153,7 @@ class ProcessIndicatorContainer: UIView {
 extension ProcessIndicatorContainer: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
-        let kMaxIndex = progressIndicatorViewList.count
+        let kMaxIndex = progressIndicatorViewList.count - 1
 
         let targetX = scrollView.contentOffset.x + velocity.x * 60.0
         var targetIndex = 0
@@ -173,27 +173,32 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
         if (targetIndex > kMaxIndex) {
             targetIndex = kMaxIndex
         }
-
-        targetContentOffset.pointee.x = CGFloat(targetIndex) * pageWidth;
-        setActiveIndicatorIndex(targetIndex)
         
-        guard let processIndicatorView = getActiveIndicator() else { return }
-        if processIndicatorView.status == .editingSelf {
+        if targetIndex != activeIndicatorIndex {
+            targetContentOffset.pointee.x = CGFloat(targetIndex) * pageWidth;
+            setActiveIndicatorIndex(targetIndex)
+            getActiveIndicator()?.handleTap()
+            deactiveInactiveIndicators()
+            
+            guard let processIndicatorView = getActiveIndicator() else { return }
             didActive(processIndicatorView.progress)
         }
     }
 }
 
 extension ProcessIndicatorContainer: ProcessIndicatorViewDelegate {
+    private func deactiveInactiveIndicators() {
+        progressIndicatorViewList
+            .filter { $0.index != activeIndicatorIndex }
+            .forEach { $0.deactive() }
+    }
+    
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
         if activeIndicatorIndex != processIndicatorView.index {
             setActiveIndicatorIndex(processIndicatorView.index, animated: true)
         }
         
-        progressIndicatorViewList
-            .filter { $0.index != activeIndicatorIndex }
-            .forEach { $0.deactive() }
-        
+        deactiveInactiveIndicators()
         didActive(processIndicatorView.progress)
     }
     

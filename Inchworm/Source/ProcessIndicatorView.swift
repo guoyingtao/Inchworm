@@ -41,7 +41,7 @@ class ProcessIndicatorView: UIView {
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
     var index = 0
-    var active = false
+    var isActive = false
     
     var progress: Float {
         get {
@@ -137,7 +137,7 @@ class ProcessIndicatorView: UIView {
     }
     
     func initialActiveStatus() {
-        active = true
+        isActive = true
         
         if progress != 0 {
             delegate?.didActive(self)
@@ -146,7 +146,7 @@ class ProcessIndicatorView: UIView {
     }
         
     func deactive() {
-        active = false
+        isActive = false
         
         if status != .tempReset {
             if viewModel.progress == 0 {
@@ -158,8 +158,8 @@ class ProcessIndicatorView: UIView {
     }
     
     @objc func handleTap() {
-        if active {
-            if status == .tempReset {
+        if isActive {
+            if status == .tempReset || status == .editingOthers {
                 status = .editingSelf
                 delegate?.didRemoveTempReset(self)
             } else {
@@ -167,14 +167,14 @@ class ProcessIndicatorView: UIView {
                 delegate?.didTempReset(self)
             }
         } else {
-            active = true
+            isActive = true
             delegate?.didActive(self)
             
             if status == .tempReset {
                 delegate?.didTempReset(self)
+            } else {
+                status = .editingSelf
             }
-            
-            status = .editingSelf
         }
     }
         
