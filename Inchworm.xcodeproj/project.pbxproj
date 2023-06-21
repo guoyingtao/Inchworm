@@ -110,13 +110,13 @@
 		5FFD2417235E37FA00602F3A /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				F2058F2E2A42A383008DEBAA /* ProcessIndicatorViewModel.swift */,
-				F2B4FDA92A3CA65900667F22 /* SlideRulerPositionHelper.swift */,
 				5F732BFD23578E57008B53DA /* Inchworm.swift */,
 				5FE0BBA3235DFB10007EFB8E /* Slider.swift */,
-				5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */,
-				5F732C0123578ED7008B53DA /* ProcessIndicatorContainer.swift */,
 				5F732C0323578F67008B53DA /* SlideRuler.swift */,
+				F2B4FDA92A3CA65900667F22 /* SlideRulerPositionHelper.swift */,
+				5F732C0123578ED7008B53DA /* ProcessIndicatorContainer.swift */,
+				5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */,
+				F2058F2E2A42A383008DEBAA /* ProcessIndicatorViewModel.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";

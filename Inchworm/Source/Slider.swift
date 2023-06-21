@@ -88,7 +88,7 @@ public class Slider: UIView {
     func createSlideRuler() {
         let sliderFrame = CGRect(x: 0, y: baseContainer.frame.height / 2, width: baseContainer.frame.width, height: baseContainer.frame.height - config.slideRulerSpan)
         let activeIndex = indicatorContainer.activeIndicatorIndex
-        let indicator = indicatorContainer.progressIndicatorViewList[activeIndex]
+        let indicator = indicatorContainer.processIndicatorViewList[activeIndex]
         
         slideRuler = SlideRuler(frame: sliderFrame, sliderValueRangeType: indicator.sliderValueRangeType)
         slideRuler.delegate = self
@@ -165,7 +165,7 @@ public class Slider: UIView {
     
     func setSlideRulerBy(progress: Float) {
         let activeIndex = indicatorContainer.activeIndicatorIndex
-        let indicator = indicatorContainer.progressIndicatorViewList[activeIndex]
+        let indicator = indicatorContainer.processIndicatorViewList[activeIndex]
         slideRuler.setPositionProvider(by: indicator.sliderValueRangeType)
         slideRuler.setUIFrames()
         slideRuler.handleRemoveTempResetWith(progress: progress)
