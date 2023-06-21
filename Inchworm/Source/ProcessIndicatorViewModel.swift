@@ -25,16 +25,51 @@ class ProcessIndicatorViewModel {
     
     var didSetProgress: (_ progressValue: Int) -> Void = { _ in }
     
+    var status: IndicatorStatus = .initial {
+        didSet {
+            didSetStatus(status)
+        }
+    }
+    
+    var didSetStatus: (_ status: IndicatorStatus) -> Void = { _ in }
+    
+    var isActive = false
+    
     init(sliderValueRangeType: SliderValueRangeType) {
         self.sliderValueRangeType = sliderValueRangeType
     }
     
-    func setDefaultProgress() {
+    private func setDefaultProgress() {
         switch sliderValueRangeType {
         case .unilateral(let limit, let defaultValue):
             fallthrough
         case .bilateral(let limit, let defaultValue):
             progress = Float(defaultValue) / Float(limit)
+        }
+    }
+    
+    private func setInitialStatus() {
+        if progress == 0 {
+            status = .initial
+        } else {
+            status = .deactive
+        }
+    }
+    
+    func initialize() {
+        setDefaultProgress()
+        setInitialStatus()
+    }
+    
+    func deactive() {
+        isActive = false
+        
+        if status != .reset {
+            if progress == 0 {
+                status = .initial
+            } else {
+                status = .deactive
+            }
         }
     }
 }

@@ -18,13 +18,13 @@ class ProcessIndicatorView: UIView {
     weak var delegate: ProcessIndicatorViewDelegate?
     var viewModel: ProcessIndicatorViewModel!
     
-    private var progressLayer = CAShapeLayer()
+    private var positiveProgressLayer = CAShapeLayer()
     private var minusProgressLayer = CAShapeLayer()
-    private var trackLayer = CAShapeLayer()
+    private var progressBaseTrackLayer = CAShapeLayer()
     private var progressNumberLayer = CATextLayer()
-    private var iconLayer = CALayer()
+    private var indicatorIconLayer = CALayer()
     
-    let trackColorVlue = UIColor(displayP3Red: 55.0 / 255.0,
+    let positiveTrackColorVlue = UIColor(displayP3Red: 55.0 / 255.0,
                                  green: 45.0 / 255.0,
                                  blue: 9.0 / 255.0,
                                  alpha: 1)
@@ -41,7 +41,15 @@ class ProcessIndicatorView: UIView {
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
     var index = 0
-    var isActive = false
+    var isActive: Bool {
+        get {
+            viewModel.isActive
+        }
+        
+        set {
+            viewModel.isActive = newValue
+        }
+    }
     
     var progress: Float {
         get {
@@ -52,18 +60,12 @@ class ProcessIndicatorView: UIView {
             viewModel.progress = newValue
         }
     }
-    
-    var status: IndicatorStatus = .initial {
-        didSet {
-            change(to: status)
-        }
-    }
-    
+        
     private var circlePath: UIBezierPath!
     
-    var progressColor = UIColor.white {
+    var positiveProgressColor = UIColor.white {
         didSet {
-            progressLayer.strokeColor = progressColor.cgColor
+            positiveProgressLayer.strokeColor = positiveProgressColor.cgColor
         }
     }
     
@@ -73,15 +75,15 @@ class ProcessIndicatorView: UIView {
         }
     }
     
-    var trackColor = UIColor.white {
+    var progressBaseTrackColor = UIColor.white {
         didSet {
-            trackLayer.strokeColor = trackColor.cgColor
+            progressBaseTrackLayer.strokeColor = progressBaseTrackColor.cgColor
         }
     }
     
     override var frame: CGRect {
         didSet {
-            setupUIFrames()
+            layoutUIs()
         }
     }
     
@@ -95,45 +97,48 @@ class ProcessIndicatorView: UIView {
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
 
-        createCircularPath()
-        createProgressNumber()
-        createIcon()
-        setupUIFrames()
-        
-        viewModel.didSetProgress = { [weak self] progressValue in
-            guard let self = self else { return }
-            self.setProgress(ratio: self.viewModel.progress, value: progressValue)
-        }
-        
-        viewModel.setDefaultProgress()
-        
-        if viewModel.progress == 0 {
-            change(to: .initial)
-        } else {
-            change(to: .editingOthers)
-        }
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tap)
+        createUIs()
+        setupViewModel()
+        makeTappable()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    func setupUIFrames() {
+    func createUIs() {
+        createCircularProgressIndicator()
+        createProgressNumberIndicator()
+        createIndicatorIcon()
+        layoutUIs()
+    }
+    
+    func layoutUIs() {
         circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
         
         let iconLayerLength = frame.width / 2
         
-        iconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
+        indicatorIconLayer.frame = CGRect(x: frame.width / 2 - iconLayerLength / 2  , y: frame.height / 2 - iconLayerLength / 2 , width: iconLayerLength, height: iconLayerLength)
         
         progressNumberLayer.frame = CGRect(x: layer.bounds.origin.x, y: ((layer.bounds.height - progressNumberLayer.fontSize) / 2), width: layer.bounds.width, height: layer.bounds.height)
         
         layer.cornerRadius = self.frame.size.width/2
-        trackLayer.path = circlePath.cgPath
-        progressLayer.path = circlePath.cgPath
+        progressBaseTrackLayer.path = circlePath.cgPath
+        positiveProgressLayer.path = circlePath.cgPath
         minusProgressLayer.path = circlePath.reversing().cgPath
+    }
+    
+    func setupViewModel() {
+        viewModel.didSetProgress = { [weak self] progressValue in
+            guard let self = self else { return }
+            self.setProgress(ratio: self.viewModel.progress, value: progressValue)
+        }
+        
+        viewModel.didSetStatus = { [weak self] status in
+            self?.change(to: status)
+        }
+        
+        viewModel.initialize()
     }
     
     func initialActiveStatus() {
@@ -141,58 +146,55 @@ class ProcessIndicatorView: UIView {
         
         if progress != 0 {
             delegate?.didActive(self)
-            status = .editingSelf
+            viewModel.status = .editing
         }
     }
         
     func deactive() {
-        isActive = false
-        
-        if status != .tempReset {
-            if viewModel.progress == 0 {
-                status = .initial
-            } else {
-                status = .editingOthers
-            }
-        }
+        viewModel.deactive()        
+    }
+    
+    func makeTappable() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tap)
     }
     
     @objc func handleTap() {
         if isActive {
-            if status == .editingSelf {
-                status = .tempReset
+            if viewModel.status == .editing {
+                viewModel.status = .reset
                 delegate?.didTempReset(self)
             } else {
-                status = .editingSelf
+                viewModel.status = .editing
                 delegate?.didRemoveTempReset(self)
             }
         } else {
             isActive = true
             delegate?.didActive(self)
             
-            if status == .tempReset {
+            if viewModel.status == .reset {
                 delegate?.didTempReset(self)
             } else {
-                status = .editingSelf
+                viewModel.status = .editing
             }
         }
     }
         
-    private func createIcon() {
-        iconLayer.contentsGravity = .resizeAspect
-        layer.addSublayer(iconLayer)
+    private func createIndicatorIcon() {
+        indicatorIconLayer.contentsGravity = .resizeAspect
+        layer.addSublayer(indicatorIconLayer)
     }
     
-    private func createCircularPath() {
+    private func createCircularProgressIndicator() {
         backgroundColor = UIColor.clear
-        trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.strokeColor = trackColor.cgColor
-        trackLayer.lineWidth = 2.0
-        trackLayer.strokeEnd = 1.0
-        layer.addSublayer(trackLayer)
+        progressBaseTrackLayer.fillColor = UIColor.clear.cgColor
+        progressBaseTrackLayer.strokeColor = progressBaseTrackColor.cgColor
+        progressBaseTrackLayer.lineWidth = 2.0
+        progressBaseTrackLayer.strokeEnd = 1.0
+        layer.addSublayer(progressBaseTrackLayer)
         
-        progressLayer = getProgressLayer(by: circlePath.cgPath, and: progressColor.cgColor)
-        layer.addSublayer(progressLayer)
+        positiveProgressLayer = getProgressLayer(by: circlePath.cgPath, and: positiveProgressColor.cgColor)
+        layer.addSublayer(positiveProgressLayer)
         
         minusProgressLayer = getProgressLayer(by: circlePath.reversing().cgPath, and: minusProgressColor.cgColor)
         layer.addSublayer(minusProgressLayer)
@@ -209,7 +211,7 @@ class ProcessIndicatorView: UIView {
         return layer
     }
     
-    private func createProgressNumber() {
+    private func createProgressNumberIndicator() {
         progressNumberLayer = CATextLayer()
         progressNumberLayer.foregroundColor = UIColor.white.cgColor
         progressNumberLayer.contentsScale = UIScreen.main.scale
@@ -221,62 +223,62 @@ class ProcessIndicatorView: UIView {
     }
     
     private func setProgress(ratio progressRatio: Float, value progressValue: Int) {
-        status = .editingSelf
+        viewModel.status = .editing
         
-        progressLayer.strokeEnd = 0
+        positiveProgressLayer.strokeEnd = 0
         
         if progressRatio > 0 {
             minusProgressLayer.strokeEnd = 0
-            progressLayer.isHidden = false
+            positiveProgressLayer.isHidden = false
             
-            progressLayer.path = circlePath.cgPath
-            progressColor = UIColor(displayP3Red: 247.0 / 255.0, green: 198.0 / 255.0, blue: 0, alpha: 1)
-            trackColor = trackColorVlue
-            progressLayer.strokeColor = progressColor.cgColor
-            progressLayer.strokeEnd = abs(CGFloat(progressRatio))
-            progressNumberLayer.foregroundColor = progressColor.cgColor
+            positiveProgressLayer.path = circlePath.cgPath
+            positiveProgressColor = UIColor(displayP3Red: 247.0 / 255.0, green: 198.0 / 255.0, blue: 0, alpha: 1)
+            progressBaseTrackColor = positiveTrackColorVlue
+            positiveProgressLayer.strokeColor = positiveProgressColor.cgColor
+            positiveProgressLayer.strokeEnd = abs(CGFloat(progressRatio))
+            progressNumberLayer.foregroundColor = positiveProgressColor.cgColor
         } else {
-            progressLayer.strokeEnd = 0
+            positiveProgressLayer.strokeEnd = 0
             minusProgressLayer.isHidden = false
             
             minusProgressColor = .white
-            trackColor = minusTrackColorValue
+            progressBaseTrackColor = minusTrackColorValue
             minusProgressLayer.strokeColor = minusProgressColor.cgColor
             minusProgressLayer.strokeEnd = abs(CGFloat(progressRatio))
             progressNumberLayer.foregroundColor = minusProgressColor.cgColor
         }
         
-        trackLayer.strokeColor = trackColor.cgColor
+        progressBaseTrackLayer.strokeColor = progressBaseTrackColor.cgColor
         progressNumberLayer.string = "\(progressValue)"
     }
         
     private func change(to status: IndicatorStatus) {
-        iconLayer.isHidden = false
+        indicatorIconLayer.isHidden = false
         progressNumberLayer.isHidden = true
-        trackLayer.strokeColor = trackColor.cgColor
-        progressLayer.isHidden = true
+        progressBaseTrackLayer.strokeColor = progressBaseTrackColor.cgColor
+        positiveProgressLayer.isHidden = true
         minusProgressLayer.isHidden = true
         
         switch status {
         case .initial:
-            iconLayer.contents = normalIconImage
-            trackLayer.strokeColor = UIColor.white.cgColor
-        case .tempReset:
-            iconLayer.contents = dimmedIconImage
-            trackLayer.strokeColor = UIColor.gray.cgColor
-        case .editingSelf:
-            iconLayer.contents = normalIconImage
-            trackLayer.strokeColor = (progress > 0 ? trackColorVlue : minusTrackColorValue).cgColor
-            iconLayer.isHidden = true
+            indicatorIconLayer.contents = normalIconImage
+            progressBaseTrackLayer.strokeColor = UIColor.white.cgColor
+        case .reset:
+            indicatorIconLayer.contents = dimmedIconImage
+            progressBaseTrackLayer.strokeColor = UIColor.gray.cgColor
+        case .editing:
+            indicatorIconLayer.contents = normalIconImage
+            progressBaseTrackLayer.strokeColor = (progress > 0 ? positiveTrackColorVlue : minusTrackColorValue).cgColor
+            indicatorIconLayer.isHidden = true
             progressNumberLayer.isHidden = false
-            progressLayer.isHidden = false
+            positiveProgressLayer.isHidden = false
             minusProgressLayer.isHidden = false
-        case .editingOthers:
-            iconLayer.contents = normalIconImage
-            trackLayer.strokeColor = (progress > 0 ? trackColorVlue : minusTrackColorValue).cgColor
-            iconLayer.isHidden = false
+        case .deactive:
+            indicatorIconLayer.contents = normalIconImage
+            progressBaseTrackLayer.strokeColor = (progress > 0 ? positiveTrackColorVlue : minusTrackColorValue).cgColor
+            indicatorIconLayer.isHidden = false
             progressNumberLayer.isHidden = true
-            progressLayer.isHidden = false
+            positiveProgressLayer.isHidden = false
             minusProgressLayer.isHidden = false
         }
     }
@@ -284,7 +286,7 @@ class ProcessIndicatorView: UIView {
 
 enum IndicatorStatus {
     case initial
-    case tempReset
-    case editingSelf
-    case editingOthers
+    case reset
+    case editing
+    case deactive
 }
