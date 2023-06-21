@@ -174,8 +174,9 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
             targetIndex = kMaxIndex
         }
         
+        targetContentOffset.pointee.x = CGFloat(targetIndex) * pageWidth;
+        
         if targetIndex != activeIndicatorIndex {
-            targetContentOffset.pointee.x = CGFloat(targetIndex) * pageWidth;
             setActiveIndicatorIndex(targetIndex)
             getActiveIndicator()?.handleTap()
             deactiveInactiveIndicators()
