@@ -58,13 +58,13 @@ public class Slider: UIView {
         baseContainer.addSubview(slideRuler)
         
         initialAutolayoutConstraint()
-        adjustContainerByOrientation()
+        adjustContainerByOrientation()        
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+        
     func createIndicatorContainer() {
         indicatorContainer = ProcessIndicatorContainer(orientation: config.orientation, frame: CGRect(x: 0, y: 0, width: baseContainer.frame.width, height: config.indicatorSpan))
         
@@ -175,8 +175,12 @@ public class Slider: UIView {
 }
 
 extension Slider: SlideRulerDelegate {
+    func didFinishLayout() {
+        indicatorContainer.initialIndicatorActive()
+    }
+    
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat) {
-        indicatorContainer.getActiveIndicator()?.progress = Float(offsetRatio)
+        indicatorContainer.setProgress(Float(offsetRatio))
         
         let activeIndex = indicatorContainer.activeIndicatorIndex
         delegate?.didGetOffsetRatio(self, activeIndicatorIndex: activeIndex, offsetRatio: Float(offsetRatio))

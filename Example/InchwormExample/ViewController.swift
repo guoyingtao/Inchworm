@@ -48,15 +48,15 @@ class ViewController: UIViewController {
     }
 
     func createSlider(with config: Config) -> UIView {
-        let model1 = ProcessIndicatorModel(sliderValueRangeType: .unilateral(limit: 30),
+        let model1 = ProcessIndicatorModel(sliderValueRangeType: .unilateral(limit: 30, defaultValue: 10),
                                            normalIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "ic_flash_on")!.tinted(with: UIColor.gray)!.cgImage!)
 
-        let model2 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 40),
+        let model2 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 40, defaultValue: 15),
                                            normalIconImage: UIImage(named: "settings")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "settings")!.tinted(with: UIColor.gray)!.cgImage!)
 
-        let model3 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 50),
+        let model3 = ProcessIndicatorModel(sliderValueRangeType: .bilateral(limit: 50, defaultValue: -25),
                                            normalIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.white)!.cgImage!,
                                            dimmedIconImage: UIImage(named: "ic_camera_front")!.tinted(with: UIColor.gray)!.cgImage!)
 

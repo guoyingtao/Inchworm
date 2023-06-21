@@ -52,7 +52,7 @@ class ProcessIndicatorContainer: UIView {
             self?.setOrientations(for: $0)
         }
         
-        rerangeIndicators()
+        reRangeIndicators()
         setActiveIndicatorIndex(activeIndicatorIndex)
     }
     
@@ -63,7 +63,7 @@ class ProcessIndicatorContainer: UIView {
         backgroundSlideView.frame = bounds
     }
     
-    func rerangeIndicators() {
+    func reRangeIndicators() {
         let slideContentSize = getSlideContentSize()
         backgroundSlideView.contentSize = CGSize(width: backgroundSlideView.frame.width + slideContentSize.width - iconLength, height: backgroundSlideView.frame.height)
                 
@@ -78,8 +78,9 @@ class ProcessIndicatorContainer: UIView {
                           normalIconImage: CGImage?,
                           dimmedIconImage: CGImage?) {
         let indicatorFrame = CGRect(x: 0, y: 0, width: iconLength, height: iconLength)
+        let viewModel = ProcessIndicatorViewModel(sliderValueRangeType: sliderValueRangeType)
         let indicatorView = ProcessIndicatorView(frame: indicatorFrame,
-                                                 sliderValueRangeType: sliderValueRangeType,
+                                                 viewModel: viewModel,
                                                  normalIconImage: normalIconImage,
                                                  dimmedIconImage: dimmedIconImage)
         indicatorView.delegate = self
@@ -89,7 +90,7 @@ class ProcessIndicatorContainer: UIView {
         backgroundSlideView.addSubview(indicatorView)
                                 
         setOrientations(for: indicatorView)
-        rerangeIndicators()
+        reRangeIndicators()
     }
     
     func setOrientations(for indicatorView: ProcessIndicatorView) {
@@ -111,14 +112,16 @@ class ProcessIndicatorContainer: UIView {
         return CGSize(width: width, height: height)
     }
     
+    func initialIndicatorActive() {
+        getActiveIndicator()?.initialActiveStatus()
+    }
+    
     func setActiveIndicatorIndex(_ index: Int = 0, animated: Bool = false) {
-        if index < 0 {
-            activeIndicatorIndex = 0
-        } else if index > progressIndicatorViewList.count - 1 {
-            activeIndicatorIndex = progressIndicatorViewList.count - 1
-        } else {
-            activeIndicatorIndex = index
+        guard index < progressIndicatorViewList.count else {
+            fatalError("Invalid index found")
         }
+        
+        activeIndicatorIndex = index
         
         guard let indicator = getActiveIndicator() else {
             return
@@ -134,12 +137,16 @@ class ProcessIndicatorContainer: UIView {
         backgroundSlideView.setContentOffset(offset, animated: animated)
     }
     
-    func getActiveIndicator() -> ProcessIndicatorView? {
+    private func getActiveIndicator() -> ProcessIndicatorView? {
         guard 0..<progressIndicatorViewList.count ~= activeIndicatorIndex else {
             return nil
         }
     
         return progressIndicatorViewList[activeIndicatorIndex]
+    }
+    
+    func setProgress(_ progress: Float) {
+        getActiveIndicator()?.progress = progress
     }
 }
 
@@ -179,7 +186,14 @@ extension ProcessIndicatorContainer: UIScrollViewDelegate {
 
 extension ProcessIndicatorContainer: ProcessIndicatorViewDelegate {
     func didActive(_ processIndicatorView: ProcessIndicatorView) {
-        setActiveIndicatorIndex(processIndicatorView.index, animated: true)        
+        if activeIndicatorIndex != processIndicatorView.index {
+            setActiveIndicatorIndex(processIndicatorView.index, animated: true)
+        }
+        
+        progressIndicatorViewList
+            .filter { $0.index != activeIndicatorIndex }
+            .forEach { $0.deactive() }
+        
         didActive(processIndicatorView.progress)
     }
     

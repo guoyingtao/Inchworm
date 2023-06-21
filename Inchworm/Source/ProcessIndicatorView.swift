@@ -8,13 +8,16 @@
 
 import UIKit
 
-protocol ProcessIndicatorViewDelegate {
+protocol ProcessIndicatorViewDelegate: AnyObject {
     func didActive(_ processIndicatorView: ProcessIndicatorView)
     func didTempReset(_ processIndicatorView: ProcessIndicatorView)
     func didRemoveTempReset(_ processIndicatorView: ProcessIndicatorView)
 }
 
 class ProcessIndicatorView: UIView {
+    weak var delegate: ProcessIndicatorViewDelegate?
+    var viewModel: ProcessIndicatorViewModel!
+    
     private var progressLayer = CAShapeLayer()
     private var minusProgressLayer = CAShapeLayer()
     private var trackLayer = CAShapeLayer()
@@ -31,16 +34,22 @@ class ProcessIndicatorView: UIView {
                                        blue: 84.0 / 255.0,
                                        alpha: 1)
     
-    var sliderValueRangeType: SliderValueRangeType!
+    var sliderValueRangeType: SliderValueRangeType {
+        viewModel.sliderValueRangeType
+    }
+    
     var normalIconImage: CGImage?
     var dimmedIconImage: CGImage?
     var index = 0
-    
     var active = false
     
-    var progress: Float = 0.0 {
-        didSet {
-            setProgress(progress)
+    var progress: Float {
+        get {
+            viewModel.progress
+        }
+        
+        set {
+            viewModel.progress = newValue
         }
     }
     
@@ -49,8 +58,6 @@ class ProcessIndicatorView: UIView {
             change(to: status)
         }
     }
-    
-    var delegate: ProcessIndicatorViewDelegate?
     
     private var circlePath: UIBezierPath!
     
@@ -79,12 +86,12 @@ class ProcessIndicatorView: UIView {
     }
     
     init(frame: CGRect,
-         sliderValueRangeType: SliderValueRangeType,
+         viewModel: ProcessIndicatorViewModel,
          normalIconImage: CGImage? = nil,
          dimmedIconImage: CGImage? = nil) {
         super.init(frame: frame)
         
-        self.sliderValueRangeType = sliderValueRangeType
+        self.viewModel = viewModel
         self.normalIconImage = normalIconImage
         self.dimmedIconImage = dimmedIconImage
 
@@ -92,12 +99,22 @@ class ProcessIndicatorView: UIView {
         createProgressNumber()
         createIcon()
         setupUIFrames()
-        change(to: .initial)
+        
+        viewModel.didSetProgress = { [weak self] progressValue in
+            guard let self = self else { return }
+            self.setProgress(ratio: self.viewModel.progress, value: progressValue)
+        }
+        
+        viewModel.setDefaultProgress()
+        
+        if viewModel.progress == 0 {
+            change(to: .initial)
+        } else {
+            change(to: .editingOthers)
+        }
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tap)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleActivited(notification:)), name: .ProgressIndicatorActivated, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -119,20 +136,23 @@ class ProcessIndicatorView: UIView {
         minusProgressLayer.path = circlePath.reversing().cgPath
     }
     
-    @objc func handleActivited(notification: Notification) {
-        guard let object = notification.object as? ProcessIndicatorView else {
-            return
-        }
+    func initialActiveStatus() {
+        active = true
         
-        if self !== object {
-            active = false
-            
-            if status != .tempReset {
-                if getProgressValue() == 0 {
-                    status = .initial
-                } else {
-                    status = .editingOthers
-                }
+        if progress != 0 {
+            delegate?.didActive(self)
+            status = .editingSelf
+        }
+    }
+        
+    func deactive() {
+        active = false
+        
+        if status != .tempReset {
+            if viewModel.progress == 0 {
+                status = .initial
+            } else {
+                status = .editingOthers
             }
         }
     }
@@ -156,8 +176,6 @@ class ProcessIndicatorView: UIView {
             
             status = .editingSelf
         }
-        
-        NotificationCenter.default.post(name: .ProgressIndicatorActivated, object: self)
     }
         
     private func createIcon() {
@@ -197,16 +215,15 @@ class ProcessIndicatorView: UIView {
         progressNumberLayer.contentsScale = UIScreen.main.scale
         progressNumberLayer.string = "0"
         progressNumberLayer.fontSize = 16
-        
         progressNumberLayer.alignmentMode = .center
         
         layer.addSublayer(progressNumberLayer)
     }
     
-    private func setProgress(_ progress: Float) {
+    private func setProgress(ratio progressRatio: Float, value progressValue: Int) {
         status = .editingSelf
         
-        if progress > 0 {
+        if progressRatio > 0 {
             progressLayer.isHidden = false
             minusProgressLayer.isHidden = true
             
@@ -214,7 +231,7 @@ class ProcessIndicatorView: UIView {
             progressColor = UIColor(displayP3Red: 247.0 / 255.0, green: 198.0 / 255.0, blue: 0, alpha: 1)
             trackColor = trackColorVlue
             progressLayer.strokeColor = progressColor.cgColor
-            progressLayer.strokeEnd = abs(CGFloat(progress))
+            progressLayer.strokeEnd = abs(CGFloat(progressRatio))
             progressNumberLayer.foregroundColor = progressColor.cgColor
         } else {
             progressLayer.isHidden = true
@@ -223,26 +240,15 @@ class ProcessIndicatorView: UIView {
             minusProgressColor = .white
             trackColor = minusTrackColorValue
             minusProgressLayer.strokeColor = minusProgressColor.cgColor
-            minusProgressLayer.strokeEnd = abs(CGFloat(progress))
+            minusProgressLayer.strokeEnd = abs(CGFloat(progressRatio))
             progressNumberLayer.foregroundColor = minusProgressColor.cgColor
         }
         
         trackLayer.strokeColor = trackColor.cgColor
-        progressNumberLayer.string = "\(getProgressValue())"
+        progressNumberLayer.string = "\(progressValue)"
     }
-    
-    func getProgressValue() -> Int {
-        switch sliderValueRangeType {
-        case .bilateral(let limit):
-            fallthrough
-        case .unilateral(let limit):
-            return Int(progress * Float(limit))
-        case .none:
-            return 0
-        }
-    }
-    
-    func change(to status: IndicatorStatus) {
+        
+    private func change(to status: IndicatorStatus) {
         iconLayer.isHidden = false
         progressNumberLayer.isHidden = true
         trackLayer.strokeColor = trackColor.cgColor
@@ -272,11 +278,6 @@ class ProcessIndicatorView: UIView {
             minusProgressLayer.isHidden = false
         }
     }
-}
-
-extension Notification.Name {
-    static let ProgressIndicatorActivated
-                = NSNotification.Name("ProgressIndicatorActivated")
 }
 
 enum IndicatorStatus {
