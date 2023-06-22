@@ -49,6 +49,6 @@ public enum SliderOrientation {
 }
 
 public enum SliderValueRangeType {
-    case bilateral(limit: Int)
-    case unilateral(limit: Int)
+    case bilateral(limit: Int, defaultValue: Int = 0)
+    case unilateral(limit: Int, defaultValue: Int = 0)
 }

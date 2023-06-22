@@ -17,6 +17,7 @@
 		5FE0BBA2235D4CDB007EFB8E /* Inchworm.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 5FE0BBA1235D4CDB007EFB8E /* Inchworm.podspec */; };
 		5FE0BBA5235DFB10007EFB8E /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE0BBA3235DFB10007EFB8E /* Slider.swift */; };
 		5FE0BBA6235DFB10007EFB8E /* ProcessIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */; };
+		F2058F2F2A42A383008DEBAA /* ProcessIndicatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2058F2E2A42A383008DEBAA /* ProcessIndicatorViewModel.swift */; };
 		F2B4FDAA2A3CA65900667F22 /* SlideRulerPositionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B4FDA92A3CA65900667F22 /* SlideRulerPositionHelper.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		5FE0BBA1235D4CDB007EFB8E /* Inchworm.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Inchworm.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		5FE0BBA3235DFB10007EFB8E /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessIndicatorView.swift; sourceTree = "<group>"; };
+		F2058F2E2A42A383008DEBAA /* ProcessIndicatorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessIndicatorViewModel.swift; sourceTree = "<group>"; };
 		F2B4FDA92A3CA65900667F22 /* SlideRulerPositionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideRulerPositionHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,12 +110,13 @@
 		5FFD2417235E37FA00602F3A /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				F2B4FDA92A3CA65900667F22 /* SlideRulerPositionHelper.swift */,
 				5F732BFD23578E57008B53DA /* Inchworm.swift */,
 				5FE0BBA3235DFB10007EFB8E /* Slider.swift */,
-				5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */,
-				5F732C0123578ED7008B53DA /* ProcessIndicatorContainer.swift */,
 				5F732C0323578F67008B53DA /* SlideRuler.swift */,
+				F2B4FDA92A3CA65900667F22 /* SlideRulerPositionHelper.swift */,
+				5F732C0123578ED7008B53DA /* ProcessIndicatorContainer.swift */,
+				5FE0BBA4235DFB10007EFB8E /* ProcessIndicatorView.swift */,
+				F2058F2E2A42A383008DEBAA /* ProcessIndicatorViewModel.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FE0BBA6235DFB10007EFB8E /* ProcessIndicatorView.swift in Sources */,
+				F2058F2F2A42A383008DEBAA /* ProcessIndicatorViewModel.swift in Sources */,
 				F2B4FDAA2A3CA65900667F22 /* SlideRulerPositionHelper.swift in Sources */,
 				5FE0BBA5235DFB10007EFB8E /* Slider.swift in Sources */,
 				5F732BFE23578E57008B53DA /* Inchworm.swift in Sources */,

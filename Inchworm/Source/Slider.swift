@@ -58,13 +58,13 @@ public class Slider: UIView {
         baseContainer.addSubview(slideRuler)
         
         initialAutolayoutConstraint()
-        adjustContainerByOrientation()
+        adjustContainerByOrientation()        
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+        
     func createIndicatorContainer() {
         indicatorContainer = ProcessIndicatorContainer(orientation: config.orientation, frame: CGRect(x: 0, y: 0, width: baseContainer.frame.width, height: config.indicatorSpan))
         
@@ -88,7 +88,7 @@ public class Slider: UIView {
     func createSlideRuler() {
         let sliderFrame = CGRect(x: 0, y: baseContainer.frame.height / 2, width: baseContainer.frame.width, height: baseContainer.frame.height - config.slideRulerSpan)
         let activeIndex = indicatorContainer.activeIndicatorIndex
-        let indicator = indicatorContainer.progressIndicatorViewList[activeIndex]
+        let indicator = indicatorContainer.processIndicatorViewList[activeIndex]
         
         slideRuler = SlideRuler(frame: sliderFrame, sliderValueRangeType: indicator.sliderValueRangeType)
         slideRuler.delegate = self
@@ -165,7 +165,7 @@ public class Slider: UIView {
     
     func setSlideRulerBy(progress: Float) {
         let activeIndex = indicatorContainer.activeIndicatorIndex
-        let indicator = indicatorContainer.progressIndicatorViewList[activeIndex]
+        let indicator = indicatorContainer.processIndicatorViewList[activeIndex]
         slideRuler.setPositionProvider(by: indicator.sliderValueRangeType)
         slideRuler.setUIFrames()
         slideRuler.handleRemoveTempResetWith(progress: progress)
@@ -175,8 +175,12 @@ public class Slider: UIView {
 }
 
 extension Slider: SlideRulerDelegate {
+    func didFinishLayout() {
+        indicatorContainer.initialIndicatorActive()
+    }
+    
     func didGetOffsetRatio(from slideRuler: SlideRuler, offsetRatio: CGFloat) {
-        indicatorContainer.getActiveIndicator()?.progress = Float(offsetRatio)
+        indicatorContainer.setProgress(Float(offsetRatio))
         
         let activeIndex = indicatorContainer.activeIndicatorIndex
         delegate?.didGetOffsetRatio(self, activeIndicatorIndex: activeIndex, offsetRatio: Float(offsetRatio))
