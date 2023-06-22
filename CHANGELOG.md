@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/guoyingtao/Inchworm/compare/v1.0.0...v1.1.0) (2023-06-22)
+
+
+### Features
+
+* support default value for ProcessIndicatorModel ([a8e45e4](https://www.github.com/guoyingtao/Inchworm/commit/a8e45e4f79643336ea4c65ec91ed8c0888fd68a1))
+
+
+### Bug Fixes
+
+* fix a indicator UI update issue ([f5e049a](https://www.github.com/guoyingtao/Inchworm/commit/f5e049ab99299766eae46b41969658ca8b768627))
+* fix progress indicator container scroll issue ([c525bfd](https://www.github.com/guoyingtao/Inchworm/commit/c525bfd5881df0d84255787f6db6381c57d47ea7))
+* fix tapping indicator logic ([3272b80](https://www.github.com/guoyingtao/Inchworm/commit/3272b800e7f62290ab750a7ee61b53e04598724c))
+* improve scrolling indicator container logic ([04cfd7e](https://www.github.com/guoyingtao/Inchworm/commit/04cfd7edf99ff98bfa6fd8fe2af4e94244326c1c))
+
 ## 1.0.0 (2023-06-16)
 
 
