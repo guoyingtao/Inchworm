@@ -25,7 +25,7 @@ A slider for adjusting values just like the one in Photo.app in iOS 13
 ### CocoaPods
 
 ```ruby
-pod 'Inchworm', '~> 1.0.0'
+pod 'Inchworm', '~> 1.1.0'
 ```
 
 ## Usage
@@ -33,7 +33,7 @@ pod 'Inchworm', '~> 1.0.0'
 * Create a Slider
 
 ``` swift
-let model1 = ProcessIndicatorModel(sliderValueRangeType: .unilateral(limit: 30),
+let model1 = ProcessIndicatorModel(sliderValueRangeType: .unilateral(limit: 30, defaultValue: 10),
                                    normalIconImage: <NormalIconImage1>,
                                    dimmedIconImage: <DimmedIconImage1>)
 
